@@ -69,9 +69,9 @@ React through `usePlaybackEngine` ([0013](./0013-frontend-state-management.md)).
 
 ## Conditions that would justify revisiting
 
-- Playback needs advanced audio features (cross-fade, mixing, background ambience)
-  that a thin adapter cannot cleanly provide — note environmental/background noise
-  is explicitly future-only and must not be blocked by this design.
+- Playback needs advanced audio features (cross-fade, richer mixing) beyond the
+  in-scope dialogue channel plus a single looping background/environmental channel
+  and its settings mixer, which a thin adapter cannot cleanly provide.
 - A mature audio library would clearly reduce complexity without violating the
   muted-line-duration rule.
 - The state model must support new modes or non-linear traversal.

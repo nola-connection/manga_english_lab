@@ -141,7 +141,7 @@ if later needed.
 - **Recommended branch:** `docs/product-requirements`
 - **Acceptance criteria:**
   - [ ] Product overview: comic-style English learning, 3 scenarios × exactly 3 complete ordered variations.
-  - [ ] MVP scope fixed: Read/Listen modes; Practice deferred; media as URLs only; background noise future-only.
+  - [ ] MVP scope fixed: Read/Listen modes; Practice deferred; media as URLs only; background/environmental audio in MVP with a settings mixer.
   - [ ] Learner personas and the core learner journey documented.
   - [ ] Glossary of product terms (never call hidden text "muted"; muted = audio only).
   - [ ] Explicit in-scope vs. out-of-scope list for the MVP.
@@ -389,8 +389,8 @@ the UI a11y layer (MEL-111).
 
 **Known risks:** Hidden coupling to the DOM/audio making tests flaky, and timing
 bugs around muted-line waits and rapid clicks. Mitigate via the injected-adapter
-boundary and a fake clock. **Deferred follow-up:** background-noise mixing;
-variable playback speed; gapless prefetch.
+boundary and a fake clock. **Deferred follow-up:** variable playback speed;
+gapless prefetch.
 
 ### MEL-017 — Audio strategy doc
 - **Size:** M · **Milestone:** M2 · **Fits one PR:** yes
@@ -401,7 +401,7 @@ variable playback speed; gapless prefetch.
   - [ ] HTMLAudio approach and metadata/duration preload strategy documented.
   - [ ] Handling for missing/invalid audio and autoplay restrictions defined.
   - [ ] Muted-line real-duration-wait requirement restated for the adapter.
-  - [ ] Media-as-URLs constraint and future background-noise deferral noted.
+  - [ ] Media-as-URLs constraint noted; background/environmental audio (separate looping channel + settings mixer) documented as in-MVP.
 - **Non-goals:** Implementing the adapter (MEL-051).
 
 ### MEL-018 — API contract doc
@@ -609,7 +609,7 @@ variable playback speed; gapless prefetch.
   - [ ] Preloads metadata/duration for lines.
   - [ ] Handles missing/invalid audio and autoplay restrictions gracefully.
   - [ ] Cleans up listeners/resources on stop/unmount.
-- **Non-goals:** Muted-line UI (MEL-061); background noise (future).
+- **Non-goals:** Muted-line UI (MEL-061); the environmental-audio channel and settings mixer (tracked as separate work).
 
 ### MEL-052 — Wire engine to UI (play/pause/restart + active highlight)
 - **Size:** M · **Milestone:** M5 · **Fits one PR:** yes

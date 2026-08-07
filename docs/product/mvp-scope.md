@@ -29,6 +29,15 @@ and what is intentionally deferred but designed for. See
   [accessibility](../architecture/accessibility.md).
 - **Recommended decision:** Seed data loads the content; no admin UI. Media
   referenced by URL/path only (no binaries in Mongo).
+- **Confirmed requirement:** Background/environmental audio per scenario on a
+  separate looping channel, with a **mixer** (dialogue-vs-environment balance and
+  on/off) as a **toggleable dropdown in the settings**. Dialogue stays dominant by
+  default, and background audio is never required to understand the conversation.
+  See [audio](../architecture/audio-strategy.md).
+- **Recommended decision:** A **service worker** caches static assets (comic
+  images, dialogue and environmental audio, app shell) so revisited scenarios load
+  quickly and tolerate flaky connections. See
+  [audio](../architecture/audio-strategy.md#caching).
 
 ## 2. Out of Scope / Explicit Non-Goals
 
@@ -46,18 +55,20 @@ portfolio piece):
 - Multiple proficiency tracks / adaptive levels.
 - Generic dialogue branching engine.
 - Analytics / behavioral tracking.
-- Background / environmental noise playback.
 
-Audio is **model pronunciation only** — no recognition, no assessment, no TTS.
+Dialogue audio is **model pronunciation only** — no recognition, no assessment,
+no TTS. (Background/environmental audio is a separate ambience channel, in scope
+for MVP — see §1.)
 
 ## 3. Deferred but Designed For
 
 - **Deferred decision — Practice mode polish:** The per-character controls
   foundation fully supports Practice now; Practice-specific UX (character picker,
   performance framing) ships immediately after MVP on the same foundation.
-- **Deferred decision — background environmental audio:** Documented as future;
-  the audio adapter and data model must not block it. See
-  [audio](../architecture/audio-strategy.md).
+- **Deferred decision — persisted mixer preferences:** Background/environmental
+  audio ships in MVP (see §1); remembering the learner's mixer settings across
+  sessions (local storage) is a follow-up isolated in the adapter/settings layer.
+  See [audio](../architecture/audio-strategy.md).
 - **Deferred decision — richer glossary fields:** MVP glossary is minimal
   (term + meaning); part-of-speech, examples, and per-line linking are future
   enhancements.
@@ -75,6 +86,11 @@ Audio is **model pronunciation only** — no recognition, no assessment, no TTS.
 - [ ] Muted lines (`audioEnabled=false`) wait the real audio-file duration
       before advancing (never skipped).
 - [ ] Read and Listen modes select the correct per-character defaults.
+- [ ] Background/environmental audio plays per scenario; the settings mixer
+      toggles it and adjusts the dialogue-vs-environment balance, with dialogue
+      dominant by default.
+- [ ] A service worker caches static assets (images, audio, app shell) so
+      revisited scenarios load quickly.
 - [ ] Glossary is viewable per scenario.
 - [ ] Responsive: desktop multi-panel and mobile single-panel with auto-advance.
 - [ ] All controls keyboard-operable; active line announced/indicated per

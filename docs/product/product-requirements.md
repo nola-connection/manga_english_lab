@@ -38,6 +38,8 @@ Learners can:
 8. See the **active bubble highlighted** during playback.
 9. Enable/disable audio per character (see §5).
 10. Open a glossary of key vocabulary.
+11. Toggle background/environmental audio and adjust the dialogue-vs-environment
+    balance from the settings mixer (see §6).
 
 All capabilities are **keyboard-accessible** — see
 [accessibility](../architecture/accessibility.md).
@@ -90,6 +92,11 @@ See [data model](../architecture/data-model.md) and
 - **Confirmed requirement:** Resume complete playback from a selected bubble
   (the selection becomes the global playback position).
 - **Confirmed requirement:** The active line's bubble is highlighted.
+- **Confirmed requirement:** A separate **looping background/environmental
+  channel** plays alongside dialogue, controlled by a **mixer** exposed as a
+  toggleable dropdown in the settings (dialogue-vs-environment balance and on/off).
+  It never blocks or overlaps dialogue timing and is never required to understand
+  the conversation.
 - **Recommended decision:** The playback engine is a framework-agnostic state
   machine with an audio adapter boundary — see
   [playback state](../architecture/playback-state.md) and
@@ -116,8 +123,11 @@ See [data model](../architecture/data-model.md) and
   functional (single-panel navigation with auto-advance).
 - **Recommended decision:** Media (images, audio) stored as URLs/paths only; no
   binaries in MongoDB. Seed data, no admin UI.
-- **Deferred decision:** Background/environmental audio is future-only; the
-  architecture must not block it but MVP does not implement it.
+- **Confirmed requirement:** Background/environmental audio ships in MVP on a
+  separate looping channel, mixed against dialogue via a toggleable dropdown in
+  the settings; dialogue stays dominant by default and background audio is never
+  required to understand the conversation. See
+  [audio](../architecture/audio-strategy.md).
 - **Open question:** Target browser matrix and minimum mobile viewport width.
 
 ## 10. Explicitly Out of Scope (MVP)
