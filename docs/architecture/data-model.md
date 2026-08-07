@@ -23,7 +23,8 @@ const BubbleSchema = new Schema({
   yPercent:      { type: Number, required: true, min: 0, max: 100 },
   widthPercent:  { type: Number, required: true, min: 0, max: 100 },
   tailDirection: { type: String, required: true,
-                   enum: ["left", "right", "up", "down"] }
+                   enum: ["top-left", "top-right", "bottom-left", "bottom-right"] }
+                   // the diagonal the tail points toward the speaker
 }, { _id: false });
 
 const DialogueLineSchema = new Schema({
@@ -84,8 +85,10 @@ const ScenarioSchema = new Schema({
 
 - **Required**: nearly all content fields are `required` — a partial scenario is
   never renderable. `glossary[].example` is the notable optional.
-- **Enums**: `bubble.tailDirection` ∈ `{left,right,up,down}`; `character.role` ∈
-  `{learner,staff,narrator,other}`.
+- **Enums**: `bubble.tailDirection` ∈
+  `{top-left,top-right,bottom-left,bottom-right}` — the **diagonal** toward which
+  the tail points, since a bubble typically sits diagonally offset from its
+  speaker; `character.role` ∈ `{learner,staff,narrator,other}`.
 - **Defaults**: `published` defaults to `false` (content is private until
   explicitly published); `glossary` defaults to `[]`.
 - **Casting**: Mongoose casts inputs to the declared types (e.g., numeric

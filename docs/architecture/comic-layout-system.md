@@ -48,9 +48,11 @@ Conceptual shape (illustrative, **not final**):
 
 ### Tail direction
 
-- **Recommended decision:** `tailDirection` belongs in stored content and is
-  **optional**. It is a semantic hint (`"bottom-right"`, `"left"`, `"none"`, …)
-  the template maps to a tail style. Omitting it yields a tailless bubble.
+- **Recommended decision:** `tailDirection` belongs in stored content. It is a
+  **diagonal** semantic hint — one of `"top-left"`, `"top-right"`, `"bottom-left"`,
+  `"bottom-right"` — naming the corner the tail points toward, since a bubble
+  typically sits diagonally offset from its speaker. The template maps it to a
+  tail style.
 
 ## Validation, clamping, and overflow
 
@@ -137,7 +139,8 @@ Conceptual shape (illustrative, **not final**):
 - Bubble near each edge and each corner (validates clamping).
 - Very long text (validates content-driven height + overflow handling).
 - Hidden text (validates shape/position preservation, no layout shift).
-- Mixed `tailDirection` values, including `"none"` / omitted.
+- Each diagonal `tailDirection` value (`"top-left"`, `"top-right"`,
+  `"bottom-left"`, `"bottom-right"`).
 
 ## Open questions
 

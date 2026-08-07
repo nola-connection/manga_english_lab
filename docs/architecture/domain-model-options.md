@@ -66,7 +66,7 @@ of one scenario is a single `findOne({ slug })`.
               text: "Hi! Are you ready to order?",
               audioUrl: "/media/restaurant/v1/p1-l1.mp3",
               bubble: { xPercent: 60, yPercent: 15, widthPercent: 34,
-                        tailDirection: "left" }
+                        tailDirection: "bottom-left" }
             },
             {
               order: 2,                 // second line in the SAME panel
@@ -74,7 +74,7 @@ of one scenario is a single `findOne({ slug })`.
               text: "Yes, could I have the tomato soup, please?",
               audioUrl: "/media/restaurant/v1/p1-l2.mp3",
               bubble: { xPercent: 8, yPercent: 62, widthPercent: 40,
-                        tailDirection: "right" }
+                        tailDirection: "top-right" }
             }
           ]
         },
@@ -90,7 +90,7 @@ of one scenario is a single `findOne({ slug })`.
               text: "Great choice. Anything to drink?",
               audioUrl: "/media/restaurant/v1/p2-l1.mp3",
               bubble: { xPercent: 55, yPercent: 20, widthPercent: 38,
-                        tailDirection: "left" }
+                        tailDirection: "bottom-left" }
             }
           ]
         }
@@ -113,7 +113,7 @@ of one scenario is a single `findOne({ slug })`.
               text: "Can I get the salad without onions?",
               audioUrl: "/media/restaurant/v2/p1-l1.mp3",
               bubble: { xPercent: 10, yPercent: 18, widthPercent: 42,
-                        tailDirection: "right" }
+                        tailDirection: "bottom-right" }
             }
           ]
         }
@@ -136,7 +136,7 @@ of one scenario is a single `findOne({ slug })`.
               text: "Could we have the bill, please?",
               audioUrl: "/media/restaurant/v3/p1-l1.mp3",
               bubble: { xPercent: 12, yPercent: 20, widthPercent: 40,
-                        tailDirection: "right" }
+                        tailDirection: "bottom-right" }
             }
           ]
         }

@@ -97,7 +97,7 @@ matches the `slug` **or** the match is unpublished.
                 "text": "Hi! Are you ready to order?",
                 "audioUrl": "/media/restaurant/v1/p1-l1.mp3",
                 "bubble": { "xPercent": 60, "yPercent": 15,
-                            "widthPercent": 34, "tailDirection": "left" }
+                            "widthPercent": 34, "tailDirection": "bottom-left" }
               },
               {
                 "order": 2,
@@ -105,7 +105,7 @@ matches the `slug` **or** the match is unpublished.
                 "text": "Yes, could I have the tomato soup, please?",
                 "audioUrl": "/media/restaurant/v1/p1-l2.mp3",
                 "bubble": { "xPercent": 8, "yPercent": 62,
-                            "widthPercent": 40, "tailDirection": "right" }
+                            "widthPercent": 40, "tailDirection": "top-right" }
               }
             ]
           }
