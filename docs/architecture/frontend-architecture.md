@@ -102,6 +102,14 @@ store. Three concerns, three ownership boundaries:
 - Every fetch hook exposes explicit `loading`, `error`, and `retry` states;
   screens render loading and error UI accordingly (see
   [accessibility.md](./accessibility.md) for accessible loading/error states).
+- **Recommended decision — cold-start-aware landing loader:** because the API is
+  hosted on a free tier that may **sleep** and incur **cold-start latency** (see
+  [deployment.md](./deployment.md)), the landing page (`ScenarioList`, route `/`)
+  shows a loader immediately, and if the first request exceeds a short threshold
+  (~1s) it reveals a brief explanatory message — e.g. "Waking the server; the
+  first load can take a few seconds on free hosting." This keeps the first-visit
+  wait understandable rather than looking broken. The message is announced
+  accessibly (see [accessibility.md](./accessibility.md)).
 - **Assumption:** no client-side caching library for the MVP; a per-hook cache
   keyed by `slug` may be added later. **Deferred decision.**
 

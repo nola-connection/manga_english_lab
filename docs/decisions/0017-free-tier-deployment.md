@@ -58,8 +58,11 @@ project ever needs it.
 
 ## Risks
 
-- **Cold starts / sleeping services** degrade first-visit UX. Mitigated by
-  documenting the trade-off; optional warm-ping or a paid tier if it matters.
+- **Cold starts / sleeping services** degrade first-visit UX. Mitigated by a
+  **cold-start-aware loading message on the landing page** so the first-visit wait
+  is understandable (see
+  [frontend-architecture.md](../architecture/frontend-architecture.md)); an
+  optional warm-ping or a paid tier remain fallbacks if it matters.
 - **Quota exhaustion** under unexpected traffic. Mitigated by the small,
   read-dominant workload and monitoring.
 - **Free-tier discontinuation** by a vendor. Mitigated by hosting-agnostic code

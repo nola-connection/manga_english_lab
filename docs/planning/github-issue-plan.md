@@ -516,7 +516,8 @@ gapless prefetch.
   - [ ] Scenario route (`/scenarios/:slug`) resolves to a scenario view.
   - [ ] Unknown slug shows a not-found state.
   - [ ] Navigation is keyboard operable.
-- **Non-goals:** Rendering panels/playback (MEL-033+).
+  - [ ] Landing page renders a loading state wired to the fetch hook's `loading`, with room for a delayed cold-start message (see frontend-architecture.md); the message copy is exercised when the live API is wired in MEL-082.
+- **Non-goals:** Rendering panels/playback (MEL-033+); live-API cold-start message copy (MEL-082).
 
 ### MEL-033 — Render a single panel from data (no playback)
 - **Size:** M · **Milestone:** M3 · **Fits one PR:** yes
@@ -764,6 +765,7 @@ gapless prefetch.
   - [ ] Frontend fetches scenarios from the API behind the existing data-layer interface.
   - [ ] Static module replaced without changing component contracts.
   - [ ] Loading and error states handled.
+  - [ ] Landing page shows a cold-start-aware loader: after a short delay (~1s) the loading UI reveals a brief message that the first load may be slow while the free-tier API wakes; announced via an `aria-live` region (see accessibility.md).
   - [ ] Behavior matches the pre-swap static experience.
 - **Non-goals:** New UI features; deployment (M13).
 

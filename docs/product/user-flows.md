@@ -8,6 +8,9 @@ where relevant the keyboard behavior is called out. See
 ## (a) Browse & Select a Scenario
 
 1. Learner lands on the scenarios list (3 scenarios).
+   - _First load:_ a loader appears; if the request is slow (free-tier cold
+     start), a short message explains the server is waking up. Announced via an
+     `aria-live` region (see [accessibility](../architecture/accessibility.md)).
 2. Each scenario shows title and short description.
 3. Learner selects a scenario (click, or `Tab` to focus + `Enter`/`Space`).
 4. App navigates to the scenario page and loads its variations.

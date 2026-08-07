@@ -35,9 +35,12 @@ ticket runs:
 
 - **Free-tier limitations** — request quotas, project/service counts, feature
   gates.
-- **Cold starts** — first-request latency after idle on the API host.
+- **Cold starts** — first-request latency after idle on the API host. **Frontend
+  mitigation:** the landing page shows a cold-start-aware loader that, after a
+  short delay, explains the first load may take a moment while the server wakes
+  (see [frontend-architecture.md](./frontend-architecture.md)).
 - **Sleep behavior** — whether the API host sleeps when idle and how it wakes;
-  impact on a recruiter's first click.
+  impact on a recruiter's first click (softened by the loader message above).
 - **Build limits** — build minutes, build frequency, artifact size caps.
 - **Bandwidth limits** — especially relevant because audio/image assets are the
   bulk of transfer.

@@ -84,6 +84,10 @@ between visually positioned bubbles and semantic dialogue order. Related:
 - **Confirmed requirement:** clear, accessible loading and error states from the
   data-fetching layer (see [frontend-architecture.md](./frontend-architecture.md)).
   Errors are announced and actionable (retry), not silent.
+- **Recommended decision:** the landing page's **cold-start loading message** (see
+  [frontend-architecture.md](./frontend-architecture.md)) lives in an
+  `aria-live="polite"` region so screen-reader users hear why the first load may
+  take a moment; it announces without stealing or trapping focus.
 
 ## Mobile / touch
 
