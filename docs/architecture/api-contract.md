@@ -152,6 +152,12 @@ the full list unpaginated. If the catalog grows, add cursor/offset pagination
 (e.g., `?limit=&cursor=`) and a `meta` block alongside `data`; this would be a
 material change recorded in an ADR.
 
+This concerns the scenario **catalog** only. **Pagination within a single
+scenario** — a variation whose panels span multiple comic pages — is a client
+**rendering** concern, not an API one: `GET /api/scenarios/:slug` always returns
+the full ordered panel set, and the client decides how to page it. See
+[comic-layout-system.md](./comic-layout-system.md#responsive-layout).
+
 ## Related documents
 
 - [`data-model.md`](./data-model.md) — the schema the single-scenario response
