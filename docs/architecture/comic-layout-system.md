@@ -103,6 +103,15 @@ Conceptual shape (illustrative, **not final**):
 - **Deferred decision:** breakpoint-specific bubble coordinates are a **fallback**
   used only if testing proves the single percentage system insufficient. Document
   mobile as functional, readable single-panel use — not full desktop parity.
+- **Deferred decision — within-scenario pagination:** a variation can hold more
+  panels than fit comfortably on one screen. On desktop the `ComicPage` may
+  **paginate a variation across multiple comic pages** (prev/next page controls)
+  rather than one unbounded scroll; on mobile the single-panel prev/next already
+  paginates panel-by-panel. During complete playback, page turns follow the
+  playback cursor just like panel transitions. The exact page-size heuristic
+  (panels per page) is settled during layout prototyping. This is distinct from
+  catalog pagination of the scenario **list** (see
+  [api-contract.md](./api-contract.md#pagination)).
 
 ## Panel navigation and playback-driven changes
 
