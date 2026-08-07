@@ -4,7 +4,8 @@ Architecture for rendering comic pages, panels, and speech bubbles. This is the
 comic-layout deliverable. Related: [accessibility.md](./accessibility.md),
 [ADR 0010 — Reusable Comic Template](../decisions/0010-reusable-comic-template.md),
 [ADR 0011 — Percentage Bubble Placement](../decisions/0011-percentage-bubble-placement.md),
-[ADR 0012 — Mobile Single-Panel](../decisions/0012-mobile-single-panel.md).
+[ADR 0012 — Mobile Single-Panel](../decisions/0012-mobile-single-panel.md),
+[ADR 0018 — Variation Layout Template](../decisions/0018-variation-layout-template.md).
 
 ## Design approach: reusable templates, not hard-coded pages
 
@@ -16,6 +17,33 @@ comic-layout deliverable. Related: [accessibility.md](./accessibility.md),
   There is no runtime composition of background + character layers.
 - Bubbles are the only dynamic overlay; they are positioned with **data-driven
   percentages** so the same image scales cleanly across viewports.
+
+## Named layout templates
+
+- **Recommended decision:** each variation declares which template renders it via
+  `variation.layoutTemplate` (see [data-model.md](./data-model.md)). The value is
+  a **named template** from a small closed catalog, so the frontend knows up front
+  **how many panels to expect** and their **dimensions/arrangement** before any
+  image loads.
+- **Template catalog (MVP):**
+
+  | `layoutTemplate` | Panels | Arrangement |
+  |---|---|---|
+  | `single`   | 1 | one full-width panel |
+  | `two-up`   | 2 | two panels side by side (stacked on mobile) |
+  | `grid-2x2` | 4 | 2×2 grid |
+  | `grid-2x3` | 6 | 2 columns × 3 rows |
+
+- **Panel-count agreement:** a variation's `panels.length` **must** equal the
+  count its `layoutTemplate` declares; this is enforced by a validator (see
+  [data-model.md](./data-model.md)), so malformed content is caught before
+  render. The count-per-template map is the shared source of truth between seed
+  validation and the template.
+- Per-panel **dimensions** (aspect-ratio boxes) and grid gaps are template
+  constants, not per-panel data — consistent with the reserved aspect-ratio box
+  below. Adding a new template (a new enum value + its cell definition) is a
+  deliberate, ADR-recorded change
+  ([ADR 0018](../decisions/0018-variation-layout-template.md)).
 
 ## Speech-bubble coordinate model
 
@@ -111,8 +139,10 @@ Conceptual shape (illustrative, **not final**):
   rather than one unbounded scroll; on mobile the single-panel prev/next already
   paginates panel-by-panel. During complete playback, page turns follow the
   playback cursor just like panel transitions. The exact page-size heuristic
-  (panels per page) is settled during layout prototyping. This is distinct from
-  catalog pagination of the scenario **list** (see
+  (panels per page) is settled during layout prototyping. A larger
+  `layoutTemplate` (e.g. `grid-2x3`) is the primary driver for paging, since its
+  panel count is what may exceed one screen. This is distinct from catalog
+  pagination of the scenario **list** (see
   [api-contract.md](./api-contract.md#pagination)).
 
 ## Panel navigation and playback-driven changes
@@ -141,6 +171,9 @@ Conceptual shape (illustrative, **not final**):
 - Hidden text (validates shape/position preservation, no layout shift).
 - Each diagonal `tailDirection` value (`"top-left"`, `"top-right"`,
   `"bottom-left"`, `"bottom-right"`).
+- Each `layoutTemplate` (`single`, `two-up`, `grid-2x2`, `grid-2x3`), including a
+  mismatch case where `panels.length` disagrees with the template (must fail
+  validation).
 
 ## Open questions
 

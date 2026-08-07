@@ -204,6 +204,8 @@ data-modeling judgment to reviewers.
   - **character-to-line associations** via a stable `speakerKey`;
   - a **per-line audio path** (URL);
   - **percentage-based bubble placement** (x/y/width as percentages);
+  - a per-variation **`layoutTemplate`** naming the panel arrangement, whose
+    declared panel count matches that variation's `panels.length`;
   - an embedded **glossary**.
 - Compare **embedded vs. referenced** modeling for characters, variations,
   panels, and lines, with the read/update patterns that justify the choice.
@@ -238,6 +240,8 @@ MEL-031 static data.
 - [ ] Embedded-vs-referenced comparison with explicit read/update rationale.
 - [ ] Decisions on semantic keys vs. `_id`s and on subdocument `_id` retention.
 - [ ] Proposed Mongoose sub-schemas and the speaker-key integrity strategy.
+- [ ] A per-variation `layoutTemplate` field (named-template enum) with a
+      validator asserting `panels.length` matches the template's panel count.
 - [ ] A recommended MVP structure, marked refinable, with an ADR stub for it.
 - [ ] Statement that material changes during implementation are recorded in an ADR.
 
@@ -246,7 +250,8 @@ or authoring museum/directions content (M9).
 
 **Testing requirements:** No code, but the example documents must be
 machine-valid JSON and internally consistent (every `speakerKey` resolves; every
-line has an audio URL; bubble percentages within 0–100). Note the validation
+line has an audio URL; bubble percentages within 0–100; every variation's
+`layoutTemplate` panel count equals its `panels.length`). Note the validation
 checks MEL-072/MEL-073 will later enforce.
 
 **Accessibility requirements:** Ensure the model can express what a11y needs —
@@ -278,6 +283,10 @@ across scenarios.
 
 **Scope & questions to evaluate:**
 - **Reusable panel templates** driven by data vs. bespoke per-scenario markup.
+- **Named layout templates** selected per variation via `layoutTemplate`: a small
+  catalog (e.g. `single`, `two-up`, `grid-2x2`, `grid-2x3`) fixing panel
+  **count**, **dimensions**, and **arrangement**, with panel-count agreement
+  enforced against `panels.length` (see data-model.md / ADR 0018).
 - **Fixed aspect ratios** for panels and how **finished images** (URLs) fill them
   without distortion.
 - **Percentage-based bubble positions** (x/y), **bubble width**, and **tail
@@ -299,6 +308,8 @@ across scenarios.
 **Acceptance criteria:**
 - [ ] Documented reusable panel/bubble model with fixed aspect ratios and
       percentage placement, width, and tail config.
+- [ ] Named-template catalog documented (each `layoutTemplate` with its panel
+      count/dimensions/arrangement) and the `panels.length` agreement rule stated.
 - [ ] Defined behavior for text wrapping, hidden text, and active highlighting.
 - [ ] Desktop multi-panel and mobile single-panel layouts specified, including
       auto panel changes during playback.
@@ -714,6 +725,8 @@ gapless prefetch.
   - [ ] Matches the MEL-014 recommended model, including `_id` decisions.
   - [ ] Slug uniqueness and speaker-key integrity enforced.
   - [ ] Validation for percentages, required audio URLs, and ordering.
+  - [ ] `layoutTemplate` enum plus a validator asserting each variation's
+        `panels.length` matches its template's declared panel count.
 - **Non-goals:** Seeding (MEL-073); API endpoints (M8).
 
 ### MEL-073 — Seed script + seed-data validation

@@ -53,6 +53,7 @@ of one scenario is a single `findOne({ slug })`.
       key: "polite-basic",
       label: "Polite basics",
       order: 1,
+      layoutTemplate: "two-up",        // 2 panels; must match panels.length
       panels: [
         {
           _id: ObjectId("64a3..."),    // stable handle for this panel
@@ -101,6 +102,7 @@ of one scenario is a single `findOne({ slug })`.
       key: "with-substitution",
       label: "Asking for a change",
       order: 2,
+      layoutTemplate: "single",        // 1 panel
       panels: [
         {
           _id: ObjectId("64a6..."),
@@ -124,6 +126,7 @@ of one scenario is a single `findOne({ slug })`.
       key: "paying-the-bill",
       label: "Paying the bill",
       order: 3,
+      layoutTemplate: "single",        // 1 panel
       panels: [
         {
           _id: ObjectId("64a8..."),

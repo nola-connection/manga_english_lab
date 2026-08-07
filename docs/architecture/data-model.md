@@ -45,10 +45,13 @@ const PanelSchema = new Schema({
 
 // VariationSchema — one complete, ordered conversation.
 const VariationSchema = new Schema({
-  key:    { type: String, required: true, trim: true },
-  label:  { type: String, required: true, trim: true },
-  order:  { type: Number, required: true, min: 1 },
-  panels: { type: [PanelSchema], required: true }
+  key:            { type: String, required: true, trim: true },
+  label:          { type: String, required: true, trim: true },
+  order:          { type: Number, required: true, min: 1 },
+  layoutTemplate: { type: String, required: true,
+                    enum: ["single", "two-up", "grid-2x2", "grid-2x3"] },
+                    // named panel arrangement; sets expected panel count/dimensions
+  panels:         { type: [PanelSchema], required: true }
 });  // keeps auto _id (stable variation handle)
 
 // CharacterSchema — a speaker in the scenario.
@@ -88,7 +91,10 @@ const ScenarioSchema = new Schema({
 - **Enums**: `bubble.tailDirection` ∈
   `{top-left,top-right,bottom-left,bottom-right}` — the **diagonal** toward which
   the tail points, since a bubble typically sits diagonally offset from its
-  speaker; `character.role` ∈ `{learner,staff,narrator,other}`.
+  speaker; `character.role` ∈ `{learner,staff,narrator,other}`;
+  `variation.layoutTemplate` ∈ `{single,two-up,grid-2x2,grid-2x3}` — the named
+  panel arrangement the template renders (see below and
+  [`comic-layout-system.md`](./comic-layout-system.md)).
 - **Defaults**: `published` defaults to `false` (content is private until
   explicitly published); `glossary` defaults to `[]`.
 - **Casting**: Mongoose casts inputs to the declared types (e.g., numeric
@@ -107,6 +113,13 @@ _(Recommended decision)_
   because a sub-schema cannot see its siblings.
 - **Unique ordering** — validators assert `order` values are unique and
   contiguous within each `variations`, `panels`, and `dialogueLines` array.
+- **Layout / panel-count agreement** — a validator asserts each variation's
+  `panels.length` matches the panel count its `layoutTemplate` declares
+  (`single`→1, `two-up`→2, `grid-2x2`→4, `grid-2x3`→6). This catches content
+  whose panels do not fit the named template before it reaches the renderer.
+  The count-per-template map is the single source of truth shared by seed
+  validation and the layout template (see
+  [`comic-layout-system.md`](./comic-layout-system.md)).
 
 ## Subdocument `_id` strategy
 
@@ -174,4 +187,7 @@ collections) must be recorded as an ADR under
 - [`backend-architecture.md`](./backend-architecture.md) — validation boundaries
   and the sub-schema (runtime, not compile-time) explanation.
 - [`api-contract.md`](./api-contract.md) — how these documents are exposed.
-- [`../decisions/`](../decisions/) — ADRs 0004–0009.
+- [`comic-layout-system.md`](./comic-layout-system.md) — the named-template
+  catalog `layoutTemplate` selects and the panel-count agreement rule.
+- [`../decisions/`](../decisions/) — ADRs 0004–0009,
+  [0018](../decisions/0018-variation-layout-template.md).

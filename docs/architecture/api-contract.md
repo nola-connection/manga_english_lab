@@ -84,6 +84,7 @@ matches the `slug` **or** the match is unpublished.
         "key": "polite-basic",
         "label": "Polite basics",
         "order": 1,
+        "layoutTemplate": "single",
         "panels": [
           {
             "_id": "64a3...",
@@ -120,8 +121,11 @@ matches the `slug` **or** the match is unpublished.
 }
 ```
 
-Note the `variations[]` array above is truncated to one variation for brevity;
-a real response contains exactly **3** variations.
+Note the `variations[]` array above is truncated to one variation for brevity,
+and its `panels[]` are abbreviated to one panel (so `layoutTemplate` reads
+`"single"` here); a real response contains exactly **3** variations, each with a
+`layoutTemplate` whose declared panel count matches its `panels.length` (see
+[`data-model.md`](./data-model.md)).
 
 ## Error shapes
 

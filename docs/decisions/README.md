@@ -76,6 +76,7 @@ standard sections used across every ADR in this directory.
 | [0015](./0015-static-media-strategy.md) | Static media strategy | Proposed |
 | [0016](./0016-seed-data-strategy.md) | Seed data strategy | Proposed |
 | [0017](./0017-free-tier-deployment.md) | Free-tier deployment | Proposed |
+| [0018](./0018-variation-layout-template.md) | Variation layout template | Proposed |
 
 ## Related documentation
 
