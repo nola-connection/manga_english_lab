@@ -18,7 +18,7 @@ _(Confirmed requirement)_
 Scenario
   ├─ metadata (title, slug, summary, published)
   ├─ characters[]        (key, displayName, role)
-  ├─ variations[]  (exactly 3, complete ordered conversations)
+  ├─ variations[]  (one or more complete ordered conversations; typically 3, soft cap ~5)
   │    └─ panels[]       (order, imageUrl, alt)
   │         └─ dialogueLines[]  (order, speakerKey, text, audioUrl, bubble)
   └─ glossary[]          (term, definition, example?)
@@ -186,7 +186,7 @@ or with an aggregation `$lookup`.
 | Update complexity | Positional/`$` array updates within one doc | Simpler to update one child in isolation |
 | Duplication | None — single source per scenario | Risk of drift between parent and children |
 | Validation | Whole tree validated in one schema | Cross-collection integrity is manual |
-| Document growth | Bounded (3 variations, few panels) | Unbounded children more naturally sharded |
+| Document growth | Bounded (soft-capped ~5 variations, few panels) | Unbounded children more naturally sharded |
 | Seed-data maintenance | One object per scenario, easy to author | Must create + link multiple documents |
 | API response shape | Already the client-ready shape | Must reassemble before responding |
 | Frontend consumption | Direct render from one payload | Same, after server reassembly |
@@ -223,8 +223,9 @@ or with an aggregation `$lookup`.
 
 _(Recommended decision)_ Choose the **fully-embedded Scenario document**:
 
-- The content is **bounded and stable** (3 scenarios × 3 variations, a handful
-  of panels/lines) — the classic case where embedding wins.
+- The content is **bounded and stable** (3 scenarios, each with a small,
+  soft-capped variation count, and a handful of panels/lines) — the classic case
+  where embedding wins.
 - Reads are the dominant operation and become a single query returning a
   **client-ready** payload (matches [`api-contract.md`](./api-contract.md)).
 - Validation and seed integrity live in **one** schema/document, avoiding

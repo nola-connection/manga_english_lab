@@ -140,7 +140,7 @@ if later needed.
 - **Blocks:** MEL-012, MEL-013, MEL-014, MEL-015, MEL-016
 - **Recommended branch:** `docs/product-requirements`
 - **Acceptance criteria:**
-  - [ ] Product overview: comic-style English learning, 3 scenarios × exactly 3 complete ordered variations.
+  - [ ] Product overview: comic-style English learning, 3 scenarios, each with one or more complete ordered variations (typically 3; soft cap ~5).
   - [ ] MVP scope fixed: Read/Listen modes; Practice deferred; media as URLs only; background/environmental audio in MVP with a settings mixer.
   - [ ] Learner personas and the core learner journey documented.
   - [ ] Glossary of product terms (never call hidden text "muted"; muted = audio only).
@@ -198,7 +198,8 @@ data-modeling judgment to reviewers.
 **Scope:**
 - Propose **at least two** candidate MongoDB structures for a Scenario, each with
   a **complete example document** that contains:
-  - exactly **3 variations**, ordered;
+  - **multiple variations**, ordered (the example shows 3; the count is variable,
+    soft-capped at ~5);
   - **multiple panels** per variation, with **more than one line** in at least
     one panel;
   - **character-to-line associations** via a stable `speakerKey`;
@@ -236,7 +237,7 @@ MEL-031 static data.
 
 **Acceptance criteria:**
 - [ ] ≥2 candidate structures, each with a full example document meeting every
-      content requirement above (3 variations, multi-line panel, glossary, etc.).
+      content requirement above (multiple variations, multi-line panel, glossary, etc.).
 - [ ] Embedded-vs-referenced comparison with explicit read/update rationale.
 - [ ] Decisions on semantic keys vs. `_id`s and on subdocument `_id` retention.
 - [ ] Proposed Mongoose sub-schemas and the speaker-key integrity strategy.
@@ -511,7 +512,7 @@ gapless prefetch.
 - **Recommended branch:** `feat/restaurant-static-data`
 - **Acceptance criteria:**
   - [ ] Restaurant scenario as a static module matching the MEL-014 model exactly.
-  - [ ] Exactly 3 ordered variations, panels with lines, characters[]+speakerKey, glossary.
+  - [ ] One or more ordered variations (typically 3), panels with lines, characters[]+speakerKey, glossary.
   - [ ] Percentage bubble placement and per-line audio URLs present.
   - [ ] Shape matches the MEL-018 API contract so it can be swapped later.
   - [ ] Data is internally consistent (every `speakerKey` resolves).
@@ -724,6 +725,9 @@ gapless prefetch.
   - [ ] Scenario schema with sub-schemas (characters[], variations→panels→lines, glossary).
   - [ ] Matches the MEL-014 recommended model, including `_id` decisions.
   - [ ] Slug uniqueness and speaker-key integrity enforced.
+  - [ ] A single helper updates every occurrence of a given `speakerKey` (the
+        `characters[].key` and all referencing lines) in one call, so renames
+        cannot desync ([ADR 0005](../decisions/0005-character-association-strategy.md)).
   - [ ] Validation for percentages, required audio URLs, and ordering.
   - [ ] `layoutTemplate` enum plus a validator asserting each variation's
         `panels.length` matches its template's declared panel count.
@@ -786,25 +790,25 @@ gapless prefetch.
 
 ## M9 — Remaining scenario content
 
-### MEL-090 — Museum scenario seed (3 variations)
+### MEL-090 — Museum scenario seed (variations)
 - **Size:** M · **Milestone:** M9 · **Fits one PR:** yes
 - **Dependencies:** MEL-073
 - **Blocks:** MEL-092
 - **Recommended branch:** `feat/museum-content`
 - **Acceptance criteria:**
-  - [ ] Museum scenario authored with exactly 3 complete ordered variations.
+  - [ ] Museum scenario authored with one or more complete, ordered variations (typically 3; soft cap ~5).
   - [ ] Conforms to schemas; validates and seeds cleanly.
   - [ ] Bubble percentages, audio URLs, and glossary present.
   - [ ] Speaker keys resolve to declared characters.
 - **Non-goals:** Directions content (MEL-091).
 
-### MEL-091 — Directions scenario seed (3 variations)
+### MEL-091 — Directions scenario seed (variations)
 - **Size:** M · **Milestone:** M9 · **Fits one PR:** yes
 - **Dependencies:** MEL-073
 - **Blocks:** MEL-092
 - **Recommended branch:** `feat/directions-content`
 - **Acceptance criteria:**
-  - [ ] Directions scenario authored with exactly 3 complete ordered variations.
+  - [ ] Directions scenario authored with one or more complete, ordered variations (typically 3; soft cap ~5).
   - [ ] Conforms to schemas; validates and seeds cleanly.
   - [ ] Bubble percentages, audio URLs, and glossary present.
   - [ ] Speaker keys resolve to declared characters.
@@ -817,7 +821,7 @@ gapless prefetch.
 - **Recommended branch:** `test/content-validation`
 - **Acceptance criteria:**
   - [ ] Automated check validates all three scenarios against schemas/rules.
-  - [ ] Confirms exactly 3 variations each and integrity of speaker keys.
+  - [ ] Confirms each scenario's variation count is within the soft upper bound of ~5 (not a fixed number) and integrity of speaker keys.
   - [ ] Flags missing audio URLs or out-of-range percentages.
   - [ ] Runs in CI.
 - **Non-goals:** Authoring new content.

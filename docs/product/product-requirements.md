@@ -21,8 +21,12 @@ panels with speech bubbles and model-pronunciation audio.
 
 - **Confirmed requirement:** Beginner TEFL learners who benefit from visual
   context, controllable audio, and the ability to hide/reveal text.
-- **Assumption:** Learners are self-directed; no teacher account or classroom
-  management is part of this product (see [MVP scope](./mvp-scope.md)).
+- **Confirmed requirement:** The product supports **both self-directed learning
+  and classroom use** — a learner can work through scenarios on their own, and a
+  teacher can also use them as classroom material. Both are first-class use cases.
+- **Assumption:** No dedicated teacher account or classroom-management tooling
+  (rosters, assignments, progress dashboards) is part of the MVP; classroom use is
+  supported by the same self-directed experience (see [MVP scope](./mvp-scope.md)).
 
 ## 3. Confirmed Learner UX Capabilities
 
@@ -48,13 +52,15 @@ All capabilities are **keyboard-accessible** — see
 
 - **Confirmed requirement:** Exactly **3 scenarios**
   (ordering-at-a-restaurant, buying-museum-tickets, asking-for-directions).
-- **Confirmed requirement:** Each scenario has **exactly 3** complete, ordered
-  dialogue **variations** (no dynamic branching).
+- **Confirmed requirement:** Each scenario has a **variable number** of complete,
+  ordered dialogue **variations** — typically **3** in the MVP content, kept under
+  a soft upper bound of ~5 to bound document growth (not a fixed count; no dynamic
+  branching).
 
 ```
 Scenario
  ├─ characters (key, e.g. "waiter", "customer")
- ├─ variations (exactly 3, ordered)
+ ├─ variations (one or more, ordered; typically 3, soft cap ~5)
  │   └─ panels (ordered)
  │       ├─ illustration image (one finished image; no dynamic composition)
  │       └─ dialogue lines (one or more, ordered)

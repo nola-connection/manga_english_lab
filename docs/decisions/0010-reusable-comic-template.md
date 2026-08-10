@@ -7,9 +7,10 @@ Proposed
 ## Context
 
 Every scenario is rendered as a comic: panels with an illustration and one or
-more speech bubbles positioned over the art. There are 3 scenarios × 3 variations
-= 9 conversations, all sharing the same visual grammar (a panel, bubbles with
-tails, a speaker). We must decide whether the UI is built from **reusable,
+more speech bubbles positioned over the art. There are 3 scenarios, each with a
+handful of variations (typically 3 in the MVP content), all sharing the same
+visual grammar (a panel, bubbles with tails, a speaker). We must decide whether
+the UI is built from **reusable,
 data-driven components** or hand-authored per scenario. This choice governs how
 much code duplication and per-content maintenance the app carries.
 

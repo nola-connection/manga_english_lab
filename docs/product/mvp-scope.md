@@ -9,8 +9,10 @@ and what is intentionally deferred but designed for. See
 
 ## 1. In Scope (MVP)
 
-- **Confirmed requirement:** 3 scenarios × 3 complete ordered variations
-  (ordering-at-a-restaurant, buying-museum-tickets, asking-for-directions).
+- **Confirmed requirement:** 3 scenarios (ordering-at-a-restaurant,
+  buying-museum-tickets, asking-for-directions), each with one or more complete,
+  ordered variations — typically 3 in the MVP content, kept under a soft upper
+  bound of ~5 (not a fixed count).
 - **Confirmed requirement:** Comic playback of a complete conversation:
   play / pause / restart, per-line audio on bubble click, resume from a selected
   bubble, active-line highlight. See
@@ -72,11 +74,13 @@ for MVP — see §1.)
 - **Deferred decision — richer glossary fields:** MVP glossary is minimal
   (term + meaning); part-of-speech, examples, and per-line linking are future
   enhancements.
-- **Open question:** Additional scenarios/variations beyond the initial 3×3.
+- **Open question:** Additional scenarios/variations beyond the initial content
+  set (and whether the soft ~5-variation bound should change).
 
 ## 4. Definition of Done for MVP
 
-- [ ] All 3 scenarios seeded, each with exactly 3 complete ordered variations.
+- [ ] All 3 scenarios seeded, each with its authored set of complete, ordered
+      variations (typically 3; soft cap ~5).
 - [ ] Each panel renders one finished illustration with data-driven bubble
       placement; reading order equals playback order.
 - [ ] Complete-conversation playback works: play, pause, restart.

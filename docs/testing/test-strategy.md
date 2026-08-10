@@ -35,7 +35,8 @@ merely re-verify library behavior.
 ### 3.1 Data & Content
 - Schema & sub-schema validation (Scenario, character, variation, panel, line,
   bubble placement percentages, `speakerKey`).
-- Seed-data validation: exactly 3 scenarios × 3 variations; ordered panels and
+- Seed-data validation: 3 scenarios, each with a variable number of variations
+  within the soft upper bound of ~5 (not a fixed count); ordered panels and
   lines; every line references an existing character `key` and an audio path.
 
 ### 3.2 API Route Integration

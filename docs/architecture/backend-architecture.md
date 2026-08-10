@@ -83,8 +83,9 @@ duplicated _(Recommended decision)_:
    `0–100`, `speakerKey` matches a character `key`). This is the single source
    of truth for what a _valid stored document_ looks like.
 3. **Integrity checks — in seed scripts.** Cross-document / referential sanity
-   that is awkward to express per-document (e.g., exactly 3 variations per
-   scenario, unique slugs across the dataset) is asserted when seeding.
+   that is awkward to express per-document (e.g., each scenario's variation count
+   stays within the soft upper bound of ~5, unique slugs across the dataset) is
+   asserted when seeding.
 
 The rule: **shape at the edge, invariants in schemas, integrity in seeds** — no
 layer re-implements another's checks.
@@ -118,8 +119,8 @@ _(Recommended decision)_ There is **no admin/CMS UI** (see non-goals in
 [`system-overview.md`](./system-overview.md)). Content is authored as data and
 loaded with a **seed script** (`scripts/seed.js`):
 
-- Reads scenario definitions (JS/JSON) for the 3 scenarios, each with exactly 3
-  variations.
+- Reads scenario definitions (JS/JSON) for the 3 scenarios, each with a variable
+  number of variations (typically 3; soft cap ~5).
 - Runs **integrity checks** before insert (unique slugs, variation/panel/line
   ordering, `speakerKey` references resolve to a character `key`).
 - Is idempotent: safe to re-run (e.g., upsert by `slug` or clear-and-reseed a

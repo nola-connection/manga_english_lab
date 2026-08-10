@@ -32,6 +32,18 @@ On mobile and small tablets, render **one panel at a time**, scaled to viewport
 width with **aspect ratio preserved** and **percentage bubbles preserved**,
 providing **prev/next navigation** and **auto-advance during playback**.
 
+## Realization
+
+This is a **viewport/breakpoint-responsive** switch, **not device detection** (no
+user-agent sniffing) and **not separate per-device layouts**. A single
+`ComicPage` and the same `ComicPanel`/`SpeechBubble` templates render in both
+modes; only the **container** differs (multi-panel page grid vs single-panel
+viewport), which works because bubbles use data-driven percentages
+([0011](./0011-percentage-bubble-placement.md)) that scale to any width. The
+concrete breakpoint value(s), whether the mode switch is CSS-only or backed by a
+small viewport hook, and the CSS-approach choice are settled in
+[`../architecture/comic-layout-system.md`](../architecture/comic-layout-system.md).
+
 ## Rationale
 
 Showing a single panel keeps the art and its bubble text at a readable size while

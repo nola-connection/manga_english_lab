@@ -17,8 +17,9 @@ are **complete, ordered conversations**, not branches of a decision tree.
 ## Options considered
 
 - **Nested embedded arrays**
-  `Scenario.variations[].panels[].dialogueLines[]`, fixed at **exactly 3**
-  complete variations per scenario for the MVP — matches the product exactly and
+  `Scenario.variations[].panels[].dialogueLines[]`, carrying a **variable number**
+  of complete variations per scenario (typically **3** in the MVP content, with a
+  **soft upper bound of ~5** to bound document growth) — matches the product and
   is trivial to author and seed. *(chosen)*
 - **A generic branching/dialogue-graph engine** (nodes, choices, edges) — far more
   flexible for interactive fiction, but massively over-scoped for three linear
@@ -30,41 +31,47 @@ are **complete, ordered conversations**, not branches of a decision tree.
 ## Decision
 
 Model content as **nested embedded arrays**
-`Scenario.variations[].panels[].dialogueLines[]`, with **exactly 3 variations per
-scenario** in the MVP, each a **complete, ordered conversation** — not a generic
-branching engine.
+`Scenario.variations[].panels[].dialogueLines[]`, with a **variable number of
+variations per scenario** — typically **3** in the MVP content and kept under a
+**soft upper bound of ~5** to bound document growth (not a fixed count) — each a
+**complete, ordered conversation**, not a generic branching engine.
 
 ## Rationale
 
 The nesting mirrors the product's mental model one-to-one, so seed data reads
-like the content it represents and the renderer walks the tree directly. Fixing
-exactly 3 variations bounds document growth (supporting the embedding decision)
-and matches the confirmed content plan. A branching engine would add nodes,
-edges, and traversal logic to express something that is fundamentally three
-linear scripts — complexity with no product payoff.
+like the content it represents and the renderer walks the tree directly. Keeping
+the variation count small — a soft upper bound of ~5, typically 3 in the MVP
+content — bounds document growth (supporting the embedding decision) without
+enshrining a fixed count; seeding, validation, and tests treat the count as
+variable within that bound. A branching engine would add nodes, edges, and
+traversal logic to express something that is fundamentally a set of linear
+scripts — complexity with no product payoff.
 
 ## Positive consequences
 
 - Structure matches the product and the renderer; minimal translation logic.
-- Bounded, predictable document size (3 variations).
+- Bounded, predictable document size (a small, soft-capped variation count).
 - Simple to author, seed, and validate (ordering + speaker integrity per array).
 - Complete conversations are easy to reason about and test end to end.
 
 ## Negative consequences
 
 - Not suited to interactive/branching dialogue without a redesign.
-- The "exactly 3" rule is a constraint that must be enforced and may feel rigid.
+- The soft upper bound (~5 variations) must be enforced in seeding/validation,
+  though the exact count stays flexible.
 - Deep nesting makes some positional updates more verbose.
 
 ## Risks
 
 - **Product wants branching later**, which this structure does not support.
   Recorded then as a superseding ADR. Monitored below.
-- **Variation count drift** away from 3. Mitigated by schema/seed validation.
+- **Variation count exceeding the soft bound (~5).** Mitigated by seed/schema
+  validation that enforces the cap while allowing any count up to it.
 
 ## Conditions that would justify revisiting
 
 - The product introduces user choices that alter the conversation flow (true
   branching), requiring a graph model.
-- The number of variations per scenario needs to vary or grow substantially.
+- The number of variations per scenario needs to grow substantially beyond the
+  soft upper bound (~5).
 - Panels or lines need to be shared/reused across variations, favoring references.

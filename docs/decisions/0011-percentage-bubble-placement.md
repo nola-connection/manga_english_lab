@@ -57,8 +57,10 @@ and reason about.
 ## Risks
 
 - **Text overflow / overlap** at extreme sizes or long strings. Mitigated by
-  content-driven height, clamping, and authoring guidance; a pixel fallback is
-  **deferred**, not adopted.
+  content-driven height, clamping, authoring guidance, and **adaptive font sizing**
+  — scaling the bubble text down (within a legible minimum) when content would
+  otherwise exceed the available box — so long lines stay inside the bubble instead
+  of pushing it into the art. A pixel fallback is **deferred**, not adopted.
 - **Author error** placing bubbles off-panel. Mitigated by 0–100 validation and
   runtime clamping.
 

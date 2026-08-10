@@ -92,9 +92,9 @@ data source from the static module to the live API behind the same contract.
 frontend data-layer swap (MEL-082).
 
 ### M9 — Remaining scenario content
-**Goal:** Author the museum and directions scenarios (each exactly 3 complete
-ordered variations) as validated seed data and run a cross-scenario content
-validation pass.
+**Goal:** Author the museum and directions scenarios (each with one or more
+complete, ordered variations — typically 3, soft-capped at ~5) as validated seed
+data and run a cross-scenario content validation pass.
 **Entry:** Seed pattern (MEL-073) established.
 **Exit:** Museum content (MEL-090), directions content (MEL-091), and content
 validation (MEL-092).

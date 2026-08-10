@@ -38,7 +38,7 @@ React Router with two routes for the MVP:
 App
 ├── ScenarioList                 (route: /)
 └── ScenarioView                 (route: /scenarios/:slug)
-    ├── VariationSelector        (choose 1 of exactly 3 variations)
+    ├── VariationSelector        (choose 1 of the scenario's variations; typically 3)
     ├── PlaybackControls         (play / pause / restart, progress)
     ├── CharacterControls[]      (per-character textVisible + audioEnabled)
     ├── ComicPage                (desktop: multi-panel; mobile: single panel)

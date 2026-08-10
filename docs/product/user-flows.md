@@ -19,7 +19,7 @@ where relevant the keyboard behavior is called out. See
 
 ## (b) Select a Variation
 
-1. Scenario page lists exactly 3 variations in order.
+1. Scenario page lists the scenario's variations in order (typically 3).
 2. Learner picks a variation (`Tab` + `Enter`).
 3. App loads the variation's ordered panels and builds the playback queue.
 4. First panel renders with its bubbles; playback is idle at the first line.

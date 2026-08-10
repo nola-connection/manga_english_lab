@@ -6,8 +6,9 @@ Proposed
 
 ## Context
 
-Manga English Lab has a **small, finite** content set (3 scenarios × 3
-variations) and **no admin UI** in the MVP. Content must nonetheless satisfy
+Manga English Lab has a **small, finite** content set (3 scenarios, each with a
+variable number of variations — typically 3, up to a soft cap of ~5) and **no
+admin UI** in the MVP. Content must nonetheless satisfy
 strict invariants: every `speakerKey` matches a `characters[].key`
 ([0005](./0005-character-association-strategy.md)), panels and lines are ordered
 consistently ([0009](./0009-dialogue-playback-ordering.md)), and bubble

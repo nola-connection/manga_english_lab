@@ -7,12 +7,14 @@ Proposed
 ## Context
 
 The core content of Manga English Lab is a **Scenario**, whose hierarchy is
-`characters[]` plus `variations[]` (exactly 3) → `panels[]` → dialogue
+`characters[]` plus `variations[]` (a variable count; see below) → `panels[]` → dialogue
 `lines[]`, with an embedded `glossary[]`. Reads dominate: rendering an exercise
 means loading one scenario in full. The content set is small and finite (3
-scenarios, 3 variations each, a handful of panels and lines), and there is no
-admin UI generating writes. We must choose how to lay this hierarchy out in
-MongoDB. Full analysis lives in
+scenarios, a handful of variations each, and a handful of panels and lines), and there is no
+admin UI generating writes. The number of variations per scenario is not fixed —
+typically 3 in the MVP content, kept under a soft upper bound of ~5 to bound
+document growth ([0008](./0008-variation-panel-line-hierarchy.md)). We must choose
+how to lay this hierarchy out in MongoDB. Full analysis lives in
 [`../architecture/domain-model-options.md`](../architecture/domain-model-options.md).
 
 ## Options considered
@@ -60,7 +62,7 @@ not have.
 ## Risks
 
 - **Unbounded growth** if content per scenario expands far beyond expectations.
-  Mitigated by the fixed "exactly 3 variations" rule
+  Mitigated by the soft upper bound of ~5 variations per scenario
   ([0008](./0008-variation-panel-line-hierarchy.md)) and small panel/line counts.
 - **Awkward nested writes** if editing granularity increases. Acceptable for a
   seed-only, read-dominant MVP; monitored below.

@@ -60,6 +60,11 @@ self-contained and single-query readable.
 - **Dangling `speakerKey`** if a character key is renamed or removed. Mitigated by
   a `pre('validate')` integrity check and seed-time validation
   ([0016](./0016-seed-data-strategy.md)).
+- **`speakerKey` desync** if a rename updates the `characters[].key` but misses the
+  line-level `speakerKey`s that reference it (or vice versa). A rename must update
+  **every occurrence of the same key together, in a single function call**, so the
+  two never diverge — never as separate, independently-applied edits. Tracked as an
+  acceptance criterion on the schema work (MEL-072).
 - **Future reuse pressure** could make embedding feel duplicative. Monitored below.
 
 ## Conditions that would justify revisiting

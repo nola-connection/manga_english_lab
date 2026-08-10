@@ -55,7 +55,8 @@ build, easier to cache with plain HTTP semantics, and simpler to test.
 ## Risks
 
 - **Over-fetching** if future views need only slices of a scenario. Mitigated by
-  the bounded document size (3 variations); payloads stay small.
+  the bounded document size (a small, soft-capped variation count); payloads stay
+  small.
 - **Endpoint proliferation** if read requirements diversify. Monitored as a
   revisit trigger below.
 
