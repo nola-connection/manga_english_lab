@@ -1,0 +1,11 @@
+{
+  "name": "@manga-english-lab/server",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Express/Mongo backend for Manga English Lab. Placeholder — no app code yet.",
+  "type": "module",
+  "scripts": {
+    "lint": "echo \"[server] lint placeholder — configured in MEL-002\"",
+    "test": "echo \"[server] test placeholder — configured in MEL-021\""
+  }
+}
