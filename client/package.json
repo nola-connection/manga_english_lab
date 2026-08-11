@@ -1,0 +1,11 @@
+{
+  "name": "@manga-english-lab/client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "React (Vite) frontend for Manga English Lab. Placeholder — no app code yet.",
+  "type": "module",
+  "scripts": {
+    "lint": "echo \"[client] lint placeholder — configured in MEL-002\"",
+    "test": "echo \"[client] test placeholder — configured in MEL-021\""
+  }
+}
