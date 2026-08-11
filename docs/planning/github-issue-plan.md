@@ -122,8 +122,8 @@ if later needed.
 - **Blocks:** MEL-010
 - **Recommended branch:** `docs/scaffold`
 - **Acceptance criteria:**
-  - [ ] `docs/` tree created (`docs/planning/`, `docs/adr/`, `docs/architecture/`).
-  - [ ] `docs/adr/` contains an ADR template and numbering convention.
+  - [ ] `docs/` tree created (`docs/planning/`, `docs/decisions/`, `docs/architecture/`).
+  - [ ] `docs/decisions/` (the ADR directory) contains an ADR template and numbering convention.
   - [ ] `docs/README.md` index explains the docs layout.
   - [ ] Links resolve within the repo.
 - **Non-goals:** Writing product or architecture content (M2).
@@ -133,6 +133,8 @@ if later needed.
 ## M2 — Product & architecture decisions (ADR-producing, no app code)
 
 > No application code is written in this milestone. Output is docs and ADRs.
+> ADRs and the ADR index live under `docs/decisions/` (`docs/decisions/README.md`
+> is the index; `docs/decisions/adr-template.md` is the template).
 
 ### MEL-010 — Product requirements + MVP scope docs
 - **Size:** M · **Milestone:** M2 · **Fits one PR:** yes
