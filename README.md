@@ -16,6 +16,27 @@ MERN — MongoDB, Mongoose, Express, React, Node.js (JavaScript / ES modules),
 React with Vite, React Router, REST API. See `docs/` for details (added via the
 documentation pull request).
 
+## Monorepo layout
+
+This repository is an npm-workspaces monorepo (ESM throughout):
+
+- `client/` — React (Vite) frontend workspace (`@manga-english-lab/client`)
+- `server/` — Express/Mongo backend workspace (`@manga-english-lab/server`)
+
+Both workspaces are placeholders at this stage; application code is scaffolded in
+later issues (MEL-030 for the client, MEL-070 for the server). The monorepo
+structure is formalized in ADR-0001 (MEL-011).
+
+The pinned Node version lives in `.nvmrc`; run `nvm use` to match it.
+
+### Bootstrap
+
+```sh
+npm install        # installs and links all workspaces from the root
+npm run lint       # runs lint across workspaces (placeholders for now)
+npm test           # runs tests across workspaces (placeholders for now)
+```
+
 ## Documentation
 
 Planning and architecture documentation lives under `docs/` once the
