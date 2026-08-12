@@ -17,7 +17,7 @@ panels with speech bubbles and model-pronunciation audio.
 - **Recommended decision:** Optimize first for a polished, small content set
   over breadth, so playback and comic UX feel finished.
 
-## 2. Target User
+## 2. Target Users & Personas
 
 - **Confirmed requirement:** Beginner TEFL learners who benefit from visual
   context, controllable audio, and the ability to hide/reveal text.
@@ -27,6 +27,29 @@ panels with speech bubbles and model-pronunciation audio.
 - **Assumption:** No dedicated teacher account or classroom-management tooling
   (rosters, assignments, progress dashboards) is part of the MVP; classroom use is
   supported by the same self-directed experience (see [MVP scope](./mvp-scope.md)).
+
+The following personas make the target users concrete. They share the same
+experience; the differences are context and goals, not features.
+
+- **Persona — Mai, the self-directed beginner.** An adult beginner learning
+  English on her own outside any class. She wants short, realistic conversations
+  she can replay, listen to without reading, and reveal text only when stuck.
+  Her goal is unhurried comprehension and pronunciation practice at her own pace;
+  she values keyboard control and being able to hide/reveal text per character.
+- **Persona — Diego, the shadowing learner.** A beginner who already understands
+  the gist and now wants to *voice a role* — reading or performing one character
+  while the others play normally. His goal is speaking practice in time with the
+  conversation, which the per-character `audioEnabled=false` (muted line waits
+  the real audio duration) behavior is designed to enable. Practice mode formalizes
+  this after MVP; the foundation exists in MVP (see §5, §7).
+- **Persona — Ms. Chen, the TEFL teacher.** A teacher using the scenarios as
+  in-class material — projecting a scenario, playing complete conversations, and
+  hiding a character's text to elicit lines from students. Her goal is a reliable,
+  finished playback experience with no setup; she uses the same self-directed UI,
+  since classroom-management tooling is explicitly out of scope for MVP.
+
+See the core learner journeys in [user flows](./user-flows.md) and the shared
+product vocabulary in [glossary](./glossary.md).
 
 ## 3. Confirmed Learner UX Capabilities
 
