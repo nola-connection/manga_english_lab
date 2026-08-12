@@ -6,8 +6,8 @@ and planning each have a consistent, predictable place.
 
 ## Layout
 
-- [`product/`](./product/) — product requirements, MVP scope, user flows, and
-  learning modes: *what* we are building and *why*.
+- [`product/`](./product/) — product requirements, MVP scope, user flows,
+  learning modes, and the product glossary: *what* we are building and *why*.
 - [`architecture/`](./architecture/) — system overview, frontend and backend
   architecture, data model, API contract, comic layout, playback, audio, and
   accessibility: *how* the system is designed.
