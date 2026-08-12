@@ -5,7 +5,7 @@
   "description": "Express/Mongo backend for Manga English Lab. Placeholder — no app code yet.",
   "type": "module",
   "scripts": {
-    "lint": "echo \"[server] lint placeholder — configured in MEL-002\"",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
     "test": "echo \"[server] test placeholder — configured in MEL-021\""
   }
 }
