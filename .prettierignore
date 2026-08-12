@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+coverage/
+
+# Generated / lock files
+package-lock.json
+
+# Prose documentation and templates (hand-wrapped; managed separately)
+docs/
+.github/
+.augment/
