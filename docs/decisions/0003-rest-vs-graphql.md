@@ -69,3 +69,20 @@ build, easier to cache with plain HTTP semantics, and simpler to test.
   reduce complexity.
 - A public/third-party API surface emerges where client-driven field selection
   is a genuine requirement.
+
+## Implications for the API contract
+
+This decision fixes the paradigm the API contract (MEL-018) specifies in detail;
+see [`../architecture/api-contract.md`](../architecture/api-contract.md):
+
+- **Endpoints** are REST resources: `GET /scenarios` (published list) and
+  `GET /scenarios/:slug` (the full embedded document), rather than a single
+  GraphQL query endpoint.
+- **Response shapes** are server-defined and match the domain model
+  ([0004](./0004-embedded-scenario-document.md) and
+  [`../architecture/data-model.md`](../architecture/data-model.md)) exactly;
+  clients receive the whole scenario and do not select fields.
+- **Errors and status codes** use standard HTTP semantics (e.g. `404` for an
+  unknown `slug`), and **published-vs-draft filtering** is enforced server-side
+  so unpublished scenarios are never returned. The contract is the shared target
+  for both the static frontend data (MEL-031) and the real endpoints (MEL-080/081).
