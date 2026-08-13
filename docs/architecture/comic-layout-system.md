@@ -90,10 +90,16 @@ Conceptual shape (illustrative, **not final**):
   the panel: enforce `xPercent + widthPercent <= 100` and apply a `max-width`
   tied to the panel box. A small safe-margin (e.g. keep bubbles within 2–4% of
   edges) is a template constant, not per-bubble data.
+- **Text wrapping:** text **wraps within the fixed bubble width** — the bubble
+  never widens to fit a long word or line. Words break at normal word boundaries
+  (standard soft wrapping); the template does not force character-level breaks in
+  the MVP. Because width is fixed, wrapping is fully determined by `widthPercent`,
+  the panel size, and font metrics, so the same content wraps consistently at a
+  given viewport.
 - **Text expansion:** because width is fixed and height is content-driven, longer
-  text grows the bubble downward. Authors budget vertical space via `yPercent`.
-  Extremely long lines are a content problem surfaced by the "very long text"
-  test config below, not a layout special case.
+  text (more wrapped lines) grows the bubble **downward**. Authors budget vertical
+  space via `yPercent`. Extremely long lines are a content problem surfaced by the
+  "very long text" test config below, not a layout special case.
 
 ## Hidden text preserves shape (no layout shift)
 
@@ -104,6 +110,20 @@ Conceptual shape (illustrative, **not final**):
   by removing the node. The bubble box, tail, and reserved space remain, so the
   panel is visually identical whether text is shown or hidden. This directly
   supports Listen and Practice learning modes.
+
+## Active-line highlighting
+
+- **Confirmed requirement:** the currently playing line/bubble is **visually
+  highlighted** so learners can follow along. The template applies an
+  active-state style (e.g. border/glow emphasis and dimming of inactive bubbles)
+  to the bubble whose line matches the playback cursor.
+- **Recommended decision:** the active state is **driven solely by the playback
+  cursor** (the active `panel`/`line`), not by hover or DOM position, so exactly
+  one bubble is highlighted at a time and it stays in sync with audio. When the
+  cursor moves to a bubble in another panel, the layout follows it (see
+  [playback-state.md](./playback-state.md) and Panel navigation below).
+- The active-state style must meet contrast requirements and respect
+  `prefers-reduced-motion` (see [accessibility.md](./accessibility.md)).
 
 ## Reading order is independent of visual position
 
@@ -153,6 +173,24 @@ Conceptual shape (illustrative, **not final**):
   cursor**: when the active line moves to a new panel, the layout follows it.
   Focus behavior on panel change is defined in
   [accessibility.md](./accessibility.md).
+
+## Keyboard and screen-reader behavior for panels/bubbles
+
+The layout is operable without a mouse and comprehensible without sight; the full
+specification lives in [accessibility.md](./accessibility.md) and the layout
+template implements it as follows:
+
+- **Keyboard:** speech bubbles and prev/next panel controls are semantic
+  `<button>`s reachable and operable by keyboard; focus order follows DOM order
+  (= playback order). Activating a bubble plays its line. On panel change (manual
+  or playback-driven), focus moves predictably to the new panel container or its
+  first bubble rather than being lost.
+- **Screen reader:** because bubbles are emitted in conversational order in the
+  DOM, a screen reader reads dialogue in the correct order regardless of visual
+  placement. Each panel image carries descriptive `alt`; each bubble button has
+  an accessible name; the active line is announced via a polite `aria-live`
+  region on advance. Hidden text applies `aria-hidden="true"` so it is not read
+  while the bubble box is preserved — hidden text is never "muted".
 
 ## Image loading and layout-shift avoidance
 
