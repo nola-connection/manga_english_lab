@@ -47,8 +47,10 @@ ADR keeps its number and gains a `Superseded by NNNN` note.
 - **Superseded** — replaced by a later ADR (which is referenced by number). The
   original text is retained for history.
 
-All ADRs in this initial planning set are **Proposed**: they represent the
-intended design captured before implementation begins.
+Most ADRs in this initial planning set are **Proposed**: they represent the
+intended design captured before implementation begins. A record is moved to
+**Accepted** once the decision it describes is ratified and in force — for
+example, ADR-0001 (repository structure), which is already realized in the repo.
 
 ## Template
 
@@ -59,7 +61,7 @@ standard sections used across every ADR in this directory.
 
 | ADR | Title | Status |
 |---|---|---|
-| [0001](./0001-repository-structure.md) | Repository structure | Proposed |
+| [0001](./0001-repository-structure.md) | Repository structure | Accepted |
 | [0002](./0002-javascript-vs-typescript.md) | JavaScript vs TypeScript | Proposed |
 | [0003](./0003-rest-vs-graphql.md) | REST vs GraphQL | Proposed |
 | [0004](./0004-embedded-scenario-document.md) | Embedded Scenario document | Proposed |
