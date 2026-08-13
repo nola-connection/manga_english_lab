@@ -24,6 +24,17 @@ small and well understood before implementation begins.
   editor refactoring, at the cost of a build/type-check step, type definitions
   for Mongoose/Express, and additional configuration.
 
+The trade-off has three dimensions:
+
+- **Type safety** — TypeScript wins outright with compile-time guarantees;
+  JavaScript relies on runtime validation and tests for the same safety.
+- **Velocity** — JavaScript wins for a single author on a small, stable domain:
+  no build/type-check step and a smaller toolchain keep iteration fast.
+- **Portfolio signal** — TypeScript is the more conventional signal on many
+  teams, but a JavaScript codebase that demonstrates disciplined **runtime
+  validation, JSDoc typing, and tests** is an equally credible portfolio signal
+  and shows the reasoning behind the choice rather than defaulting to TypeScript.
+
 ## Decision
 
 Use **JavaScript with ES modules** for both the client and the server in the
@@ -39,6 +50,20 @@ API boundary. Seed integrity is checked by dedicated scripts (see
 single author intentionally practicing core MERN, the compile step and typing
 overhead of TypeScript buy relatively little for the MVP. JavaScript keeps
 iteration fast and the codebase approachable.
+
+### Mitigations
+
+The type-safety cost of choosing JavaScript is deliberately mitigated by two
+practices adopted from the start, not deferred:
+
+- **Runtime validation** — Mongoose schemas (required fields, enums, types,
+  custom validators) plus API request validation and dedicated seed-integrity
+  scripts (see [0016](./0016-seed-data-strategy.md)) are the single source of
+  truth for data safety at persistence and at the API boundary.
+- **JSDoc typing** — shared shapes (the domain model, API request/response
+  objects) are annotated with JSDoc `@typedef`/`@param`/`@returns`, giving editor
+  autocompletion and lightweight checkable contracts without adopting a TypeScript
+  build step. This keeps the door open to an incremental TS migration later.
 
 ## Positive consequences
 
