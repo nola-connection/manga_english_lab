@@ -112,6 +112,43 @@ safe stopped state (see error handling). `unmount` always tears everything down.
 - `usePlaybackEngine` (see [frontend-architecture.md](./frontend-architecture.md))
   binds the engine to React and the adapter.
 
+## Unit-test matrix (MEL-121)
+
+Because the engine is a pure state machine driven by injected events, a fake
+clock, and a fake adapter, the following matrix is fully deterministic and uses
+**no real audio**. This is the set [MEL-121](https://github.com/nola-connection/manga_english_lab/issues/53)
+implements.
+
+- **State transitions:** for every `From × Event` cell in the transition table,
+  assert the resulting state and cursor (e.g. `Idle --play--> Playing`;
+  `Playing --pause--> Paused` keeps the cursor; `Playing --ended (last line)-->
+  Complete`; `Complete --play--> Playing` with `cursor=0`; `selectBubble(i)` from
+  any state → `PlayingSelected` with `cursor=i`; `restart` → `Playing` with
+  `cursor=0`; `unmount` → `Idle`/torn down).
+- **Cursor / queue movement:** flattening a multi-panel variation yields the
+  expected ordered queue; `ended` advances the cursor by one; crossing a panel
+  boundary updates the derived `panelIndex`; advancing past the last line reaches
+  `Complete`.
+- **Muted-line timing (fake clock):** an `audioEnabled=false` line does **not**
+  play audio but the engine waits the preloaded real duration on the fake clock,
+  then advances; asserting it advances at `duration`, not before, and never as an
+  instant skip; missing metadata falls back to the conservative default duration.
+- **Bubble-select resume:** `selectBubble(i)` sets `cursor=i` and plays only that
+  line (`PlayingSelected`); a subsequent `play` resumes **complete** playback from
+  line `i` (→ `Playing`), and `ended` in `PlayingSelected` lands in `Paused` on
+  the selected line.
+- **Race safety (fake clock + tokens):** rapid `selectBubble` calls cancel the
+  in-flight line so only the latest wins; late `ended`/`timeout` callbacks bearing
+  a stale token are ignored; `error` cancels the line and lands in a safe stopped
+  state.
+- **Lifecycle:** `unmount` (and route change) stops audio, clears timers, and
+  detaches listeners via the fake adapter; no commands are emitted afterward.
+
+The fake adapter records emitted commands (`playLine`/`stop`/`highlight`/
+`advance`) so tests assert on **commands + state + cursor** rather than on the
+DOM. Autoplay restriction is exercised by asserting the engine surfaces a
+"needs user gesture" error when `play` is attempted without a prior gesture.
+
 ## Open questions
 
 - **Open question:** whether `Complete` keeps the last bubble highlighted or
