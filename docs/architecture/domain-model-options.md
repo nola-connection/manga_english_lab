@@ -24,8 +24,10 @@ Scenario
   └─ glossary[]          (term, definition, example?)
 ```
 
-There are exactly **3 scenarios**, each with exactly **3 complete, ordered
-variations** — not a generic branching engine.
+There are exactly **3 scenarios**, each with a **variable number** of complete,
+ordered variations — typically **3** in the MVP content, kept under a soft upper
+bound of ~5 (not a fixed count, and not a generic branching engine). The example
+below shows a scenario with 3 variations.
 
 ## Option A — Fully embedded single Scenario document (recommended)
 
@@ -156,26 +158,122 @@ of one scenario is a single `findOne({ slug })`.
 
 ## Option B — Partially referenced collections
 
-Split the tree across collections and join by reference. For example, keep a
-`scenarios` collection with metadata + characters + glossary, and store
-`variations` (and optionally `panels`) in their own collections that reference
-their parent by `_id`.
+Split the tree across collections and join by reference. Keep a `scenarios`
+collection with metadata + characters + glossary, and store `variations` (with
+their panels/lines still embedded) in their own collection that references the
+parent scenario by `_id`. The worked example below covers the **same content**
+as Option A — the restaurant scenario with three ordered variations, a two-line
+panel, `speakerKey` associations, per-line audio URLs, percentage bubbles,
+per-variation `layoutTemplate` matching `panels.length`, and an embedded
+glossary — so the two options are compared on equal footing.
+
+### Worked example (restaurant scenario)
 
 ```js
-// scenarios
-{ _id: ObjectId("64a1..."), slug: "ordering-at-a-restaurant",
-  title: "Ordering at a Restaurant", published: true,
-  characters: [ /* ... */ ], glossary: [ /* ... */ ] }
+// Collection: scenarios  — one document holds metadata, characters, glossary.
+{
+  _id: ObjectId("64a1..."),
+  slug: "ordering-at-a-restaurant",       // unique, human-readable, public lookup
+  title: "Ordering at a Restaurant",
+  summary: "Order food and drinks politely at a casual restaurant.",
+  published: true,
+  characters: [
+    { key: "customer", displayName: "Mia",    role: "learner" },
+    { key: "waiter",   displayName: "Waiter",  role: "staff" }
+  ],
+  glossary: [
+    { term: "bill", definition: "The list of what you must pay.",
+      example: "Could we have the bill, please?" },
+    { term: "substitution", definition: "Changing one item for another." }
+  ]
+}
 
-// variations  (referenced by scenarioId)
-{ _id: ObjectId("64a2..."), scenarioId: ObjectId("64a1..."),
-  key: "polite-basic", order: 1,
-  panels: [ /* embedded, or a further `panels` collection */ ] }
+// Collection: variations  — each references its parent by scenarioId.
+// Panels and dialogue lines remain embedded within a variation.
+{
+  _id: ObjectId("64a2..."),
+  scenarioId: ObjectId("64a1..."),        // reference to scenarios._id
+  key: "polite-basic",
+  label: "Polite basics",
+  order: 1,
+  layoutTemplate: "two-up",               // 2 panels; must match panels.length
+  panels: [
+    {
+      _id: ObjectId("64a3..."),
+      order: 1,
+      imageUrl: "/media/restaurant/v1/p1.png",
+      alt: "A waiter greeting a seated customer with a menu.",
+      dialogueLines: [
+        { order: 1, speakerKey: "waiter",
+          text: "Hi! Are you ready to order?",
+          audioUrl: "/media/restaurant/v1/p1-l1.mp3",
+          bubble: { xPercent: 60, yPercent: 15, widthPercent: 34,
+                    tailDirection: "bottom-left" } },
+        { order: 2, speakerKey: "customer",   // second line in the SAME panel
+          text: "Yes, could I have the tomato soup, please?",
+          audioUrl: "/media/restaurant/v1/p1-l2.mp3",
+          bubble: { xPercent: 8, yPercent: 62, widthPercent: 40,
+                    tailDirection: "top-right" } }
+      ]
+    },
+    {
+      _id: ObjectId("64a4..."),
+      order: 2,
+      imageUrl: "/media/restaurant/v1/p2.png",
+      alt: "The waiter writing the order on a notepad.",
+      dialogueLines: [
+        { order: 1, speakerKey: "waiter",
+          text: "Great choice. Anything to drink?",
+          audioUrl: "/media/restaurant/v1/p2-l1.mp3",
+          bubble: { xPercent: 55, yPercent: 20, widthPercent: 38,
+                    tailDirection: "bottom-left" } }
+      ]
+    }
+  ]
+}
+{
+  _id: ObjectId("64a5..."),
+  scenarioId: ObjectId("64a1..."),
+  key: "with-substitution", label: "Asking for a change", order: 2,
+  layoutTemplate: "single",               // 1 panel
+  panels: [
+    { _id: ObjectId("64a6..."), order: 1,
+      imageUrl: "/media/restaurant/v2/p1.png",
+      alt: "A customer pointing at a menu item.",
+      dialogueLines: [
+        { order: 1, speakerKey: "customer",
+          text: "Can I get the salad without onions?",
+          audioUrl: "/media/restaurant/v2/p1-l1.mp3",
+          bubble: { xPercent: 10, yPercent: 18, widthPercent: 42,
+                    tailDirection: "bottom-right" } }
+      ] }
+  ]
+}
+{
+  _id: ObjectId("64a7..."),
+  scenarioId: ObjectId("64a1..."),
+  key: "paying-the-bill", label: "Paying the bill", order: 3,
+  layoutTemplate: "single",               // 1 panel
+  panels: [
+    { _id: ObjectId("64a8..."), order: 1,
+      imageUrl: "/media/restaurant/v3/p1.png",
+      alt: "A customer handing a card to the waiter.",
+      dialogueLines: [
+        { order: 1, speakerKey: "customer",
+          text: "Could we have the bill, please?",
+          audioUrl: "/media/restaurant/v3/p1-l1.mp3",
+          bubble: { xPercent: 12, yPercent: 20, widthPercent: 40,
+                    tailDirection: "bottom-right" } }
+      ] }
+  ]
+}
 ```
 
-Assembling a full scenario requires a `findOne` plus a `find` on variations (and
-another on panels if those are also split), then stitching in application code
-or with an aggregation `$lookup`.
+Assembling a full scenario requires a `findOne` on `scenarios` plus a `find` on
+`variations` (`{ scenarioId }`, sorted by `order`), then stitching in application
+code or with an aggregation `$lookup`. Note the `speakerKey` values reference
+`characters[].key`, which now lives in a **different document** — so the
+speaker-integrity check spans collections in this option (see Comparison).
 
 ## Comparison
 
