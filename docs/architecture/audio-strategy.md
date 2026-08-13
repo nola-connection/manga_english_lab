@@ -87,6 +87,41 @@ normal `ended` event, so muted and audible lines share one code path.
   cleanup; see the token/cancel-before-play rules in
   [playback-state.md](./playback-state.md)).
 
+## Adapter contract (for MEL-051)
+
+This is the interface the HTMLAudio adapter
+([MEL-051](https://github.com/nola-connection/manga_english_lab/issues/30))
+implements. It mirrors the engine commands/events defined in
+[playback-state.md](./playback-state.md) so the two docs stay aligned: the engine
+holds no DOM references and only exchanges plain commands/events with the adapter.
+
+- **Commands the adapter accepts (from the engine):**
+  - `playLine(i)` — start the audio for queue line `i` (or, for an
+    `audioEnabled=false` line, start a duration timer instead of `play()`).
+  - `stop()` — cancel the in-flight line: stop audio, clear the timer, detach
+    listeners (cancel-before-play / cleanup).
+  - `preload(urls)` — create elements with `preload='metadata'` and populate the
+    URL → `duration` cache ahead of the cursor.
+  - `setVolumes({ dialogueVolume, environmentVolume })`, `setMasterMute(bool)`,
+    `startEnvironment(url)` / `stopEnvironment()` — mixer/background controls;
+    the state machine stays volume-agnostic.
+  - `teardown()` — stop all channels, timers, and listeners (route change/unmount).
+- **Events the adapter emits (back to the engine):**
+  - `ended` — the active line finished (fired by real `ended` **or** the
+    muted-line duration timer, so both share one engine code path).
+  - `error` — load/decode failure or a rejected `play()` (autoplay gesture
+    missing); the engine cancels the line and lands in a safe stopped state.
+  - `durationKnown(url, seconds)` — metadata resolved; feeds the duration cache
+    and the muted-line timer. Missing metadata falls back to the conservative
+    default duration.
+- **Invariants:** at most one dialogue line audible at a time; every emitted
+  callback carries the current play token so late events from a superseded line
+  are ignored (see the token rule in [playback-state.md](./playback-state.md)).
+
+The adapter is the **only** side-effecting component; because the engine consumes
+these events and a fake clock, the playback unit-test matrix in
+[playback-state.md](./playback-state.md) runs without real audio.
+
 ## Background / environmental audio (in MVP)
 
 **Confirmed requirement:** background/environmental noise (restaurant chatter,
