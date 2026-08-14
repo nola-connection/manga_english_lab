@@ -149,3 +149,20 @@ client/src/
   can be tested in isolation and reused if the UI framework ever changes.
 - **Open question:** whether `styles/` uses CSS Modules or plain CSS is not yet
   decided; the layout system doc drives that choice.
+
+## Related documents
+
+- [`backend-architecture.md`](./backend-architecture.md) — the paired server
+  architecture; the two halves integrate over the API contract below.
+- [`api-contract.md`](./api-contract.md) — the REST contract the data-fetching
+  layer targets (shared by client and server).
+- [`playback-state.md`](./playback-state.md) — the framework-agnostic engine
+  wrapped by `usePlaybackEngine`.
+- [`comic-layout-system.md`](./comic-layout-system.md) — responsive comic-page vs
+  single-panel layout owned by `ComicPage`.
+- [`accessibility.md`](./accessibility.md) — accessible loading/error and
+  focus/announcement behavior the components must honor.
+- [`deployment.md`](./deployment.md) — cold-start/config realities the landing
+  loader and API base URL account for.
+- [`../decisions/0013-frontend-state-management.md`](../decisions/0013-frontend-state-management.md)
+  — ADR recording native React state + hooks (no Redux).

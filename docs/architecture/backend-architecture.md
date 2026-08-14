@@ -129,6 +129,8 @@ loaded with a **seed script** (`scripts/seed.js`):
 
 ## Related documents
 
+- [`frontend-architecture.md`](./frontend-architecture.md) — the paired client
+  architecture that consumes this API.
 - [`system-overview.md`](./system-overview.md) — where the server sits.
 - [`data-model.md`](./data-model.md) — the Mongoose schemas and validators.
 - [`domain-model-options.md`](./domain-model-options.md) — why the embedded
