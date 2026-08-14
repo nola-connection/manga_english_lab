@@ -17,7 +17,8 @@ merely re-verify library behavior.
   element). Test **our** logic and contracts instead.
 - **Confirmed requirement:** The playback engine is a **framework-agnostic state
   machine** unit-tested **without real audio** via an **audio adapter boundary**
-  (a fake adapter reports durations and end events). See
+  (a fake adapter reports durations and end events) and an **injected clock /
+  timer** so duration waits advance deterministically with no real delays. See
   [playback state](../architecture/playback-state.md) and
   [audio](../architecture/audio-strategy.md).
 
@@ -87,3 +88,19 @@ merely re-verify library behavior.
 - No tests asserting exact audio playback in a real browser element.
 - No snapshot tests that lock arbitrary markup with no behavioral meaning.
 - No pronunciation/recognition/TTS tests — those features are out of scope.
+
+## 6. Continuous Integration
+
+- **Confirmed requirement:** the suite runs in CI. The workflow at
+  [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs lint and the
+  workspace tests on every pull request and on pushes to `main`, so no change
+  merges without a green run.
+- **Recommended decision:** the layered suites (§3) run in the workspace they
+  belong to — frontend unit/component under `client/`, backend integration
+  under `server/` — via the root `npm test`, which fans out to each workspace.
+- **Recommended decision:** coverage is reported per the philosophy in §1 (every
+  critical domain rule has a failing-if-broken test) rather than enforced as a
+  numeric gate; a coverage threshold may be added later if it earns its keep.
+- **Open question:** whether the single Playwright e2e journey (§3.6) runs on
+  every PR or only pre-deploy depends on the CI build-minute budget (see
+  [deployment](../architecture/deployment.md)).
