@@ -89,6 +89,25 @@ ticket runs:
 - **Open question:** whether to gate deploys on the test suite in CI — desirable,
   but depends on the free-tier build-minute budget confirmed at deploy time.
 
+## Seeding, smoke test & rollback
+
+- **Seed in production.** There is no admin/CMS UI, so content ships as data
+  (see [backend-architecture.md](./backend-architecture.md)). After the API is
+  deployed, run the **idempotent seed script** (`server/scripts/seed.js`) against
+  the production Atlas connection string to load the three scenarios. It runs the
+  same integrity checks as locally and is safe to re-run (upsert by `slug` /
+  clear-and-reseed), so seeding is the content-release step, not a migration.
+- **Smoke test.** After deploy + seed, verify end-to-end on the deployed origin:
+  `GET /scenarios` and `GET /scenarios/:slug` respond per
+  [api-contract.md](./api-contract.md), the frontend scenario list loads, and
+  playback works against the production audio URLs. **Recommended decision:**
+  keep these steps written down so the check is repeatable each deploy.
+- **Rollback.** Because content is data and the seed is idempotent, rollback is
+  low-risk: redeploy the previous frontend/API build (the static/API hosts retain
+  prior deploys), and if a bad seed shipped, re-run the seed to restore
+  known-good content. **Assumption:** no destructive schema migrations in the
+  MVP, so there is no forward-only data migration to unwind.
+
 ## Open questions
 
 - **Open question:** which specific free-tier providers meet the bandwidth needs
