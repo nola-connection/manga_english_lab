@@ -9,6 +9,22 @@ match the schemas in [`data-model.md`](./data-model.md).
 > shape changes should be reflected here and, if material, in an ADR under
 > [`../decisions/`](../decisions/).
 
+## Shared contract (single target)
+
+This document is the **single source of truth** for the API surface and is the
+**shared target** for both data paths:
+
+- **MEL-031 (static frontend data)** ships fixtures shaped **exactly** like these
+  responses (same `data` envelope, same field names, same nested shape), so the
+  client can be built against static JSON and later switched to the live API with
+  no client changes.
+- **MEL-080 / MEL-081 (the real API)** implement these same endpoints and shapes
+  on top of the Express server and the domain model.
+
+Because both paths conform to this contract, static-vs-live is an
+implementation detail to the client. Any change to the shapes here must update
+**both** producers.
+
 ## Conventions
 
 - **Versioning** — all routes live under the `/api` prefix _(Recommended
@@ -32,10 +48,12 @@ match the schemas in [`data-model.md`](./data-model.md).
 
 ### `GET /api/scenarios`
 
-Returns the list of **published** scenarios as a **lightweight projection** —
-`slug`, `title`, `summary`, and `thumbnail` only. It deliberately does **not**
-include the nested `variations`/`panels` content, keeping the browse payload
-small.
+Returns the list of **published** scenarios as a **lightweight projection** of
+top-level `ScenarioSchema` fields — `slug`, `title`, and `summary` only. Every
+field is drawn directly from the domain model (see
+[`data-model.md`](./data-model.md)); no synthesized fields are returned. It
+deliberately does **not** include the nested `variations`/`panels` content,
+keeping the browse payload small.
 
 **200 response**
 
@@ -45,18 +63,21 @@ small.
     {
       "slug": "ordering-at-a-restaurant",
       "title": "Ordering at a Restaurant",
-      "summary": "Order food and drinks politely at a casual restaurant.",
-      "thumbnail": "/media/restaurant/thumb.png"
+      "summary": "Order food and drinks politely at a casual restaurant."
     },
     {
       "slug": "buying-museum-tickets",
       "title": "Buying Museum Tickets",
-      "summary": "Buy tickets and ask about opening hours.",
-      "thumbnail": "/media/museum/thumb.png"
+      "summary": "Buy tickets and ask about opening hours."
     }
   ]
 }
 ```
+
+A dedicated cover-image field for list cards is **not** part of the MVP domain
+model; adding one would be a **material** domain-model change recorded as an ADR
+(see [`data-model.md`](./data-model.md)). Until then the browse UI may reuse a
+scenario's first panel `imageUrl` after fetching the full document.
 
 ### `GET /api/scenarios/:slug`
 
