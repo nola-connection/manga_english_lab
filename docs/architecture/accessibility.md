@@ -10,6 +10,11 @@ between visually positioned bubbles and semantic dialogue order. Related:
 
 - **Confirmed requirement:** the app must be usable without hearing audio and
   without a mouse.
+- **Target — WCAG 2.1 AA for the MVP.** This is the conformance level the
+  guidance below is written against: keyboard operability, accessible names,
+  screen-reader dialogue order, AA-level contrast (see [Visual design](#visual-design)),
+  reduced motion, and adequate touch targets are all AA requirements this doc
+  operationalizes.
 - **Recommended decision:** DOM order = data order = playback order is the single
   rule that keeps reading, keyboard, screen-reader, and playback order aligned.
 
