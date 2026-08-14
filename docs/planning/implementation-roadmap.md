@@ -173,3 +173,21 @@ All three architecture tickets precede any implementation that depends on them.
 - **Content in parallel:** the museum and directions content tickets (MEL-090,
   MEL-091) can be written in parallel with each other and with other work as
   soon as the seed pattern (MEL-073) exists.
+
+## Related documents
+
+The milestones above sequence the work; the documents below are the authoritative
+detail this roadmap points at, so the planning cross-links resolve end to end:
+
+- [`github-issue-plan.md`](./github-issue-plan.md) — the per-issue backlog
+  (dependencies, blocks, acceptance criteria) each milestone maps to.
+- [`../architecture/`](../architecture/) — the architecture deliverables produced
+  in M2, including [`system-overview.md`](../architecture/system-overview.md),
+  [`data-model.md`](../architecture/data-model.md),
+  [`comic-layout-system.md`](../architecture/comic-layout-system.md),
+  [`playback-state.md`](../architecture/playback-state.md), and
+  [`deployment.md`](../architecture/deployment.md).
+- [`../decisions/`](../decisions/) — the ADR index recording the load-bearing
+  decisions (repository structure, domain model, playback ordering, deployment).
+- [`../product/mvp-scope.md`](../product/mvp-scope.md) — the MVP scope the
+  milestone exit criteria are drawn from.
