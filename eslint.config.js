@@ -47,6 +47,13 @@ export default [
       react: { version: "detect" },
     },
   },
+
+  // Client uses the automatic JSX runtime (Vite default), so React need not be
+  // imported into scope. Disables react-in-jsx-scope / jsx-uses-react.
+  {
+    files: ["client/**/*.{js,jsx}"],
+    ...react.configs.flat["jsx-runtime"],
+  },
   {
     files: ["client/**/*.{js,jsx}"],
     plugins: { "react-hooks": reactHooks },
