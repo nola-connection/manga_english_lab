@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --no-error-on-unmatched-pattern",
-    "test": "echo \"[client] test placeholder — configured in MEL-021\""
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "react": "^19.2.8",
@@ -17,7 +18,12 @@
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.4",
     "@vitejs/plugin-react": "^6.0.5",
-    "vite": "^8.2.1"
+    "jsdom": "^29.1.1",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
   }
 }
