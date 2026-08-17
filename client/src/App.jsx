@@ -1,21 +1,18 @@
 import { Routes, Route } from "react-router-dom";
 
-// Base routing shell. Only a placeholder route exists for now; the real
-// ScenarioList (`/`) and ScenarioView (`/scenarios/:slug`) screens arrive with
-// MEL-032. See docs/architecture/frontend-architecture.md.
-function Placeholder() {
-  return (
-    <main>
-      <h1>Manga English Lab</h1>
-      <p>Client scaffold is running.</p>
-    </main>
-  );
-}
+import ScenarioList from "./components/ScenarioList.jsx";
+import ScenarioView from "./components/ScenarioView.jsx";
+import NotFound from "./components/NotFound.jsx";
 
+// Routing shell for the MVP (see docs/architecture/frontend-architecture.md):
+// `/` browses scenarios, `/scenarios/:slug` views one, and a catch-all renders
+// the not-found state.
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Placeholder />} />
+      <Route path="/" element={<ScenarioList />} />
+      <Route path="/scenarios/:slug" element={<ScenarioView />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
