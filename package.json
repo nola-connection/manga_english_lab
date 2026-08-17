@@ -18,6 +18,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "npm run test --workspaces --if-present",
+    "validate:data": "node scripts/validate-restaurant-data.mjs",
     "dev": "npm run dev --workspaces --if-present"
   },
   "devDependencies": {
