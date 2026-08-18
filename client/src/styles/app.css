@@ -114,3 +114,25 @@ button:focus-visible {
   margin: 0;
   font-size: 0.95rem;
 }
+
+/* Active-line highlighting (MEL-040): when the panel has an active line, dim the
+   inactive bubbles and emphasize the active one so learners can follow along
+   (see docs/architecture/comic-layout-system.md). Emphasis uses colour and an
+   outer glow only — never box geometry — so highlighting never shifts layout. */
+.comic-panel--has-active .speech-bubble {
+  opacity: 0.55;
+  transition: opacity 150ms ease;
+}
+
+.comic-panel--has-active .speech-bubble--active {
+  opacity: 1;
+  border-color: #1a5fd0;
+  box-shadow: 0 0 0 3px rgba(26, 95, 208, 0.35);
+}
+
+/* Respect users who prefer reduced motion: keep the state change instant. */
+@media (prefers-reduced-motion: reduce) {
+  .comic-panel--has-active .speech-bubble {
+    transition: none;
+  }
+}
