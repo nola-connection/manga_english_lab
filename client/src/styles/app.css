@@ -75,3 +75,42 @@ button:focus-visible {
   display: inline-block;
   margin-bottom: 1rem;
 }
+
+/* Comic panel (MEL-033): an aspect-ratio box reserved before the image loads so
+   bubbles position against a stable frame and the page never reflows once the
+   image arrives (see docs/architecture/comic-layout-system.md). */
+.comic-panel {
+  position: relative;
+  width: 100%;
+  margin: 1.5rem 0 0;
+  overflow: hidden;
+  background: #eef0f3;
+  border-radius: 0.5rem;
+}
+
+/* The image fills the reserved box absolutely, so it adds no intrinsic height
+   and cannot shift layout when it finishes loading. */
+.comic-panel__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Speech bubbles: left/top/width are set inline from percentage coordinates;
+   this rule owns only the appearance and stacking above the image. */
+.speech-bubble {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem;
+  background: #ffffff;
+  border: 2px solid #1a1a1a;
+  border-radius: 0.75rem;
+}
+
+.speech-bubble__text {
+  margin: 0;
+  font-size: 0.95rem;
+}

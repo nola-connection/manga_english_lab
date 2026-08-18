@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import { useScenario } from "../hooks/useScenario.js";
+import ComicPanel from "./ComicPanel.jsx";
 import NotFound from "./NotFound.jsx";
 
 /**
@@ -8,8 +9,10 @@ import NotFound from "./NotFound.jsx";
  * and shows its overview: title, summary, the available variations, and the
  * glossary terms. Unknown slugs render the not-found state.
  *
- * Rendering panels, speech bubbles, and playback is intentionally out of scope
- * here (MEL-033+); this view only proves the route resolves to a scenario.
+ * As of MEL-033 it also previews the first panel of the first variation via
+ * `ComicPanel` (image + speech bubbles, no playback) to prove the panel-render
+ * approach from `docs/architecture/comic-layout-system.md`. Variation selection
+ * and multi-panel layout and playback arrive in later tickets.
  */
 export default function ScenarioView() {
   const { slug } = useParams();
@@ -47,6 +50,10 @@ export default function ScenarioView() {
     );
   }
 
+  // Preview the first panel of the first variation (MEL-033). Multi-panel
+  // layout and variation selection arrive in later tickets.
+  const firstPanel = scenario.variations?.[0]?.panels?.[0];
+
   return (
     <main className="app-main">
       <Link className="back-link" to="/">
@@ -54,6 +61,13 @@ export default function ScenarioView() {
       </Link>
       <h1>{scenario.title}</h1>
       <p>{scenario.summary}</p>
+
+      {firstPanel && (
+        <section aria-labelledby="preview-heading">
+          <h2 id="preview-heading">Preview</h2>
+          <ComicPanel panel={firstPanel} />
+        </section>
+      )}
 
       <section aria-labelledby="variations-heading">
         <h2 id="variations-heading">Variations</h2>
