@@ -35,6 +35,27 @@ const panel = {
   ],
 };
 
+// A different, single-line panel config to prove the template renders ANY panel
+// from data rather than anything specific to the two-line fixture above.
+const singleLinePanel = {
+  order: 2,
+  imageUrl: "/media/restaurant/v3/p1.png",
+  alt: "The waiter presenting the menu to the seated customer.",
+  dialogueLines: [
+    {
+      order: 1,
+      speakerKey: "waiter",
+      text: "Good evening. Here is our menu.",
+      bubble: {
+        xPercent: 50,
+        yPercent: 12,
+        widthPercent: 44,
+        tailDirection: "bottom-left",
+      },
+    },
+  ],
+};
+
 describe("MEL-033 single comic panel render", () => {
   it("renders the finished image at a fixed aspect ratio (AC1)", () => {
     const { container } = render(<ComicPanel panel={panel} />);
@@ -92,5 +113,78 @@ describe("MEL-033 single comic panel render", () => {
 
     expect(after).toBe(before);
     expect(firstBubble).toHaveStyle({ left: "58%", top: "12%", width: "36%" });
+  });
+});
+
+describe("MEL-040 reusable ComicPanel template", () => {
+  it("renders any panel from data — image and bubbles (AC1)", () => {
+    const { container } = render(<ComicPanel panel={singleLinePanel} />);
+
+    expect(
+      screen.getByRole("img", { name: singleLinePanel.alt }),
+    ).toHaveAttribute("src", singleLinePanel.imageUrl);
+    expect(
+      screen.getByText("Good evening. Here is our menu."),
+    ).toBeInTheDocument();
+    expect(container.querySelectorAll(".speech-bubble")).toHaveLength(1);
+  });
+
+  it("reserves a fixed aspect ratio to prevent layout shift (AC2)", () => {
+    const { container } = render(
+      <ComicPanel panel={singleLinePanel} aspectWidth={16} aspectHeight={9} />,
+    );
+
+    // The reserved box carries the aspect ratio regardless of image load, and a
+    // custom ratio is honored — proving space is reserved from the ratio alone.
+    const box = container.querySelector(".comic-panel");
+    expect(box).toHaveStyle({ aspectRatio: "16 / 9" });
+
+    const img = screen.getByRole("img", { name: singleLinePanel.alt });
+    const before = box.getAttribute("style");
+    fireEvent.load(img);
+    expect(box.getAttribute("style")).toBe(before);
+  });
+
+  it("handles multiple lines per panel (AC4)", () => {
+    const { container } = render(<ComicPanel panel={panel} />);
+
+    // Both lines render as bubbles, in reading order, from a multi-line panel.
+    const texts = [...container.querySelectorAll(".speech-bubble__text")].map(
+      (el) => el.textContent,
+    );
+    expect(texts).toEqual([
+      "Hi! Are you ready to order?",
+      "Yes, could I have the tomato soup, please?",
+    ]);
+  });
+
+  it("honors the active-line indicator prop, marking exactly one bubble (AC3)", () => {
+    const { container } = render(
+      <ComicPanel panel={panel} activeLineOrder={2} />,
+    );
+
+    const active = container.querySelectorAll(".speech-bubble--active");
+    expect(active).toHaveLength(1);
+
+    // The active bubble is the one whose line order matches, not DOM position.
+    expect(active[0]).toHaveTextContent(
+      "Yes, could I have the tomato soup, please?",
+    );
+    expect(active[0]).toHaveAttribute("aria-current", "true");
+    // The panel is flagged so inactive bubbles can be dimmed.
+    expect(container.querySelector(".comic-panel")).toHaveClass(
+      "comic-panel--has-active",
+    );
+  });
+
+  it("marks no bubble active when the active-line prop is unset (AC3)", () => {
+    const { container } = render(<ComicPanel panel={panel} />);
+
+    expect(container.querySelectorAll(".speech-bubble--active")).toHaveLength(
+      0,
+    );
+    expect(container.querySelector(".comic-panel")).not.toHaveClass(
+      "comic-panel--has-active",
+    );
   });
 });
