@@ -60,6 +60,30 @@ export default [
     rules: {
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
+      // PropTypes are deprecated in React 19; we rely on JSDoc/tests instead of
+      // runtime prop validation, so disable the prop-types requirement.
+      "react/prop-types": "off",
+    },
+  },
+
+  // Vitest globals (globals:true) for client test files and the shared setup.
+  {
+    files: [
+      "client/**/*.{test,spec}.{js,jsx}",
+      "client/src/test/**/*.{js,jsx}",
+    ],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        vi: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+      },
     },
   },
 
