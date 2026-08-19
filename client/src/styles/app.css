@@ -99,20 +99,73 @@ button:focus-visible {
   display: block;
 }
 
-/* Speech bubbles: left/top/width are set inline from percentage coordinates;
-   this rule owns only the appearance and stacking above the image. */
+/* Speech bubbles (MEL-041): left/top/width are set inline from percentage
+   coordinates; height is content-driven. The bubble is a semantic <button> so it
+   is keyboard-focusable and ready for later interaction, hence the button reset.
+   Text wraps within the fixed width — the bubble never widens to fit long text
+   (see docs/architecture/comic-layout-system.md and ADR-0011). */
 .speech-bubble {
   position: absolute;
   box-sizing: border-box;
+  min-height: 44px; /* touch-target floor for the focusable bubble (a11y) */
   padding: 0.5rem 0.75rem;
   background: #ffffff;
   border: 2px solid #1a1a1a;
   border-radius: 0.75rem;
+  /* Reset the <button> so it reads as a bubble, not a form control. */
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  /* Wrap long text inside the fixed width instead of widening the bubble. */
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .speech-bubble__text {
   margin: 0;
   font-size: 0.95rem;
+}
+
+/* Diagonal tail pointing toward the corner nearest the speaker. Purely
+   decorative (aria-hidden); exact geometry per direction is intentionally simple
+   (an open question in comic-layout-system.md). It sits on the top or bottom
+   edge, offset toward the named left/right side. */
+.speech-bubble__tail {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 0.6rem solid transparent;
+}
+
+.speech-bubble--tail-top-left .speech-bubble__tail,
+.speech-bubble--tail-top-right .speech-bubble__tail {
+  top: -1.2rem;
+  border-bottom-color: #1a1a1a;
+}
+
+.speech-bubble--tail-bottom-left .speech-bubble__tail,
+.speech-bubble--tail-bottom-right .speech-bubble__tail {
+  bottom: -1.2rem;
+  border-top-color: #1a1a1a;
+}
+
+.speech-bubble--tail-top-left .speech-bubble__tail,
+.speech-bubble--tail-bottom-left .speech-bubble__tail {
+  left: 1rem;
+}
+
+.speech-bubble--tail-top-right .speech-bubble__tail,
+.speech-bubble--tail-bottom-right .speech-bubble__tail {
+  right: 1rem;
+}
+
+/* Hidden-text state (Listen/Practice): hide only the text with visibility so the
+   bubble box, border, and tail are preserved — no layout shift. This is a
+   text-visibility state, never "muted"; audio is a separate concern. */
+.speech-bubble--text-hidden .speech-bubble__text {
+  visibility: hidden;
 }
 
 /* Active-line highlighting (MEL-040): when the panel has an active line, dim the
