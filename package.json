@@ -19,6 +19,8 @@
     "format:check": "prettier --check .",
     "test": "npm run test --workspaces --if-present",
     "validate:data": "node scripts/validate-restaurant-data.mjs",
+    "prompt:image": "node scripts/generate-image-prompt.mjs",
+    "prompt:image:check": "node scripts/check-image-prompt.mjs",
     "dev": "npm run dev --workspaces --if-present"
   },
   "devDependencies": {
