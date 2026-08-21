@@ -76,6 +76,25 @@ button:focus-visible {
   margin-bottom: 1rem;
 }
 
+/* Desktop comic page (MEL-042): composes a variation's panels into a grid in
+   playback order. `grid-template-columns` is set inline per layout template using
+   minmax(0, 1fr) tracks, so columns share the row width and the page never
+   overflows horizontally at desktop widths. DOM order == data order == playback
+   order and the grid fills cells row-major with no reordering. The mobile
+   single-panel view arrives in MEL-100. */
+.comic-page {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  margin: 1.5rem 0 0;
+  box-sizing: border-box;
+}
+
+/* Inside the page grid, spacing comes from the grid gap, not per-panel margins. */
+.comic-page .comic-panel {
+  margin: 0;
+}
+
 /* Comic panel (MEL-033): an aspect-ratio box reserved before the image loads so
    bubbles position against a stable frame and the page never reflows once the
    image arrives (see docs/architecture/comic-layout-system.md). */

@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import { useScenario } from "../hooks/useScenario.js";
-import ComicPanel from "./ComicPanel.jsx";
+import ComicPage from "./ComicPage.jsx";
 import NotFound from "./NotFound.jsx";
 
 /**
@@ -9,10 +9,11 @@ import NotFound from "./NotFound.jsx";
  * and shows its overview: title, summary, the available variations, and the
  * glossary terms. Unknown slugs render the not-found state.
  *
- * As of MEL-033 it also previews the first panel of the first variation via
- * `ComicPanel` (image + speech bubbles, no playback) to prove the panel-render
- * approach from `docs/architecture/comic-layout-system.md`. Variation selection
- * and multi-panel layout and playback arrive in later tickets.
+ * As of MEL-042 it previews the first variation as a desktop comic page via
+ * `ComicPage` (all panels laid out in playback order, no playback logic) to prove
+ * the multi-panel layout from `docs/architecture/comic-layout-system.md`.
+ * Variation selection, mobile single-panel view, and playback arrive in later
+ * tickets.
  */
 export default function ScenarioView() {
   const { slug } = useParams();
@@ -50,9 +51,9 @@ export default function ScenarioView() {
     );
   }
 
-  // Preview the first panel of the first variation (MEL-033). Multi-panel
-  // layout and variation selection arrive in later tickets.
-  const firstPanel = scenario.variations?.[0]?.panels?.[0];
+  // Preview the first variation as a comic page (MEL-042). Variation selection
+  // and playback arrive in later tickets.
+  const firstVariation = scenario.variations?.[0];
 
   return (
     <main className="app-main">
@@ -62,10 +63,10 @@ export default function ScenarioView() {
       <h1>{scenario.title}</h1>
       <p>{scenario.summary}</p>
 
-      {firstPanel && (
+      {firstVariation && (
         <section aria-labelledby="preview-heading">
           <h2 id="preview-heading">Preview</h2>
-          <ComicPanel panel={firstPanel} />
+          <ComicPage variation={firstVariation} />
         </section>
       )}
 
