@@ -777,7 +777,7 @@ gapless prefetch.
 
 ### MEL-082 — Frontend data layer swap static->API behind same contract
 - **Size:** M · **Milestone:** M8 · **Fits one PR:** yes
-- **Dependencies:** MEL-032, MEL-081
+- **Dependencies:** MEL-032, MEL-081, MEL-150 (if merged; the panel image-prompt tooling must switch source alongside the frontend)
 - **Blocks:** MEL-123, MEL-131
 - **Recommended branch:** `feat/fe-data-layer`
 - **Acceptance criteria:**
@@ -786,6 +786,7 @@ gapless prefetch.
   - [ ] Loading and error states handled.
   - [ ] Landing page shows a cold-start-aware loader: after a short delay (~1s) the loading UI reveals a brief message that the first load may be slow while the free-tier API wakes; announced via an `aria-live` region (see accessibility.md).
   - [ ] Behavior matches the pre-swap static experience.
+  - [ ] The panel image-prompt tooling (`scripts/generate-image-prompt.mjs` and `scripts/check-image-prompt.mjs`, MEL-150) no longer imports `client/src/api/staticData.js` directly: it resolves scenarios from the same API-backed source behind an environment-selectable base URL (dev/prod), feeding the unchanged pure prompt builder in `scripts/lib/image-prompt.mjs`. Prompt output is unchanged for equivalent data.
 - **Non-goals:** New UI features; deployment (M13).
 
 ---
