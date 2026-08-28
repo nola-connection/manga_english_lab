@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 import ComicPanel from "./ComicPanel.jsx";
 
 /**
@@ -19,15 +21,29 @@ import ComicPanel from "./ComicPanel.jsx";
  *   order**; the grid fills cells in DOM order (row-major) with no reordering, so
  *   visual order matches too.
  *
- * This template owns no playback logic (M5) and no mobile single-panel view
- * (MEL-100); those arrive in later tickets.
+ * Active-line highlighting is driven by the playback cursor (MEL-052): the
+ * cursor's `panelIndex`/line `order` are threaded in as `activePanelIndex` and
+ * `activeLineOrder`, and only the active panel receives the active line so
+ * exactly one bubble is highlighted across the whole page
+ * (docs/architecture/playback-state.md). The `ref` exposes the page element so a
+ * parent can scroll/focus the active panel as the cursor crosses panels.
+ *
+ * This template owns no playback logic beyond deriving highlight from props and
+ * no mobile single-panel view (MEL-100); those arrive in later tickets.
  *
  * @param {object} props
  * @param {{ layoutTemplate: "single"|"two-up"|"grid-2x2"|"grid-2x3",
  *   panels: Array<{ order: number, imageUrl: string, alt: string,
  *     dialogueLines: Array<object> }> }} props.variation the variation to render
+ * @param {number|null} [props.activePanelIndex=null] index (in playback order)
+ *   of the panel holding the active line, or null when nothing is active.
+ * @param {number|null} [props.activeLineOrder=null] `order` of the active line
+ *   within its panel.
  */
-export default function ComicPage({ variation }) {
+const ComicPage = forwardRef(function ComicPage(
+  { variation, activePanelIndex = null, activeLineOrder = null },
+  ref,
+) {
   const { layoutTemplate, panels } = variation;
   const columns = COLUMNS_PER_TEMPLATE[layoutTemplate] ?? 1;
 
@@ -37,17 +53,27 @@ export default function ComicPage({ variation }) {
 
   return (
     <div
+      ref={ref}
       className={`comic-page comic-page--${layoutTemplate}`}
       data-layout-template={layoutTemplate}
       data-columns={columns}
       style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
     >
-      {orderedPanels.map((panel) => (
-        <ComicPanel key={panel.order} panel={panel} />
+      {orderedPanels.map((panel, panelIndex) => (
+        <ComicPanel
+          key={panel.order}
+          panel={panel}
+          panelIndex={panelIndex}
+          activeLineOrder={
+            panelIndex === activePanelIndex ? activeLineOrder : null
+          }
+        />
       ))}
     </div>
   );
-}
+});
+
+export default ComicPage;
 
 /**
  * Column count per named layout template (see `comic-layout-system.md`). Row

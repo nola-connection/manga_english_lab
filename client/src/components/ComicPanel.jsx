@@ -24,12 +24,17 @@ import SpeechBubble from "./SpeechBubble.jsx";
  *   dialogueLines: Array<{ order: number, speakerKey: string, text: string,
  *     bubble: object }> }} props.panel
  * @param {number|null} [props.activeLineOrder=null] `order` of the active line
+ * @param {number} [props.panelIndex] this panel's index in playback order,
+ *   exposed as `data-panel-index` so a parent can target it for scroll/focus as
+ *   the playback cursor crosses panels (MEL-052). The panel is programmatically
+ *   focusable (`tabIndex=-1`) for that follow but stays out of the tab order.
  * @param {number} [props.aspectWidth=4] width part of the reserved aspect ratio
  * @param {number} [props.aspectHeight=3] height part of the reserved aspect ratio
  */
 export default function ComicPanel({
   panel,
   activeLineOrder = null,
+  panelIndex,
   aspectWidth = 4,
   aspectHeight = 3,
 }) {
@@ -47,6 +52,8 @@ export default function ComicPanel({
     <div
       className={className}
       style={{ aspectRatio: `${aspectWidth} / ${aspectHeight}` }}
+      data-panel-index={panelIndex}
+      tabIndex={panelIndex === undefined ? undefined : -1}
     >
       <img
         className="comic-panel__image"
