@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import { useScenario } from "../hooks/useScenario.js";
-import ComicPage from "./ComicPage.jsx";
+import PlaybackReader from "./PlaybackReader.jsx";
 import NotFound from "./NotFound.jsx";
 
 /**
@@ -9,11 +9,11 @@ import NotFound from "./NotFound.jsx";
  * and shows its overview: title, summary, the available variations, and the
  * glossary terms. Unknown slugs render the not-found state.
  *
- * As of MEL-042 it previews the first variation as a desktop comic page via
- * `ComicPage` (all panels laid out in playback order, no playback logic) to prove
- * the multi-panel layout from `docs/architecture/comic-layout-system.md`.
- * Variation selection, mobile single-panel view, and playback arrive in later
- * tickets.
+ * As of MEL-052 it plays back the first variation through `PlaybackReader`:
+ * play/pause/restart controls drive the engine + audio adapter, the active line
+ * is highlighted from the playback cursor, and focus/scroll follow the active
+ * panel (see `docs/architecture/playback-state.md`). Variation selection and the
+ * mobile single-panel view arrive in later tickets.
  */
 export default function ScenarioView() {
   const { slug } = useParams();
@@ -51,8 +51,8 @@ export default function ScenarioView() {
     );
   }
 
-  // Preview the first variation as a comic page (MEL-042). Variation selection
-  // and playback arrive in later tickets.
+  // Play back the first variation (MEL-052). Variation selection arrives in a
+  // later ticket.
   const firstVariation = scenario.variations?.[0];
 
   return (
@@ -66,7 +66,7 @@ export default function ScenarioView() {
       {firstVariation && (
         <section aria-labelledby="preview-heading">
           <h2 id="preview-heading">Preview</h2>
-          <ComicPage variation={firstVariation} />
+          <PlaybackReader variation={firstVariation} />
         </section>
       )}
 
