@@ -208,3 +208,54 @@ button:focus-visible {
     transition: none;
   }
 }
+
+/* Playback (MEL-052): the reader stacks the controls above the comic page. */
+.playback-reader {
+  margin-top: 1rem;
+}
+
+/* Play/pause/restart controls. They are semantic <button>s and inherit the
+   global :focus-visible ring; sizing keeps them above the touch-target floor. */
+.playback-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.playback-controls__button {
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  color: #ffffff;
+  background: #1a5fd0;
+  border: 1px solid #1a5fd0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.playback-controls__button--restart {
+  color: #1a5fd0;
+  background: #ffffff;
+}
+
+/* The active panel receives focus as the cursor crosses panels; make that
+   follow visible alongside the per-bubble highlight. */
+.comic-panel:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* Visually-hidden live region: present for assistive tech, off-screen visually
+   without disabling announcements (a display:none region would not announce). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
